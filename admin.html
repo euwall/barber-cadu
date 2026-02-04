@@ -9,32 +9,34 @@
     <style>
         :root { --oliva: #708238; --bg: #0a0a0a; --card: rgba(255,255,255,0.05); --erro: #ff4d4d; }
         
-        body, html { height: 100%; margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; }
+        * { box-sizing: border-box; }
+        body, html { height: 100%; margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* LOGIN TOTALMENTE CENTRALIZADO */
+        /* LOGIN VOLTANDO AO ESTILO TERMINAL + CENTRALIZAÇÃO TOTAL */
         #login-screen {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: var(--bg); z-index: 999; 
-            display: flex; justify-content: center; align-items: center; /* Centralização absoluta */
+            display: flex; justify-content: center; align-items: center;
             transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
         }
-        .login-box { 
-            width: 85%; max-width: 320px; text-align: center; 
-            background: rgba(255,255,255,0.02); padding: 40px;
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.08);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .login-box h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 24px; letter-spacing: 5px; margin-bottom: 30px; }
+        .login-box { text-align: center; width: 85%; max-width: 320px; }
+        .login-box p { font-size: 9px; color: #444; letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
+        .login-box h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 28px; letter-spacing: 5px; margin: 0 0 30px 0; }
+        
         .input-pass {
-            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); 
-            background: #000; color: var(--oliva); text-align: center; font-size: 22px; outline: none; margin-bottom: 20px; box-sizing: border-box;
+            width: 100%; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
+            background: #000; color: var(--oliva); text-align: center; font-size: 24px;
+            outline: none; margin-bottom: 15px; font-family: 'Oswald', sans-serif;
         }
-        .btn-login { width: 100%; padding: 15px; border-radius: 15px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; }
+        .btn-login { 
+            width: 100%; padding: 15px; border-radius: 12px; border: none; 
+            background: var(--oliva); color: #000; font-weight: 800; 
+            text-transform: uppercase; cursor: pointer; letter-spacing: 2px; font-size: 12px;
+        }
 
-        /* PAINEL */
-        .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
-        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; text-align: center; }
+        /* PAINEL CENTRALIZADO */
+        .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
+        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; }
         
         .stats { display: flex; gap: 15px; margin: 30px 0; width: 100%; }
         .stat-box { background: var(--card); flex: 1; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
@@ -45,13 +47,12 @@
         .lista { display: grid; gap: 12px; width: 100%; margin-top: 15px; }
         
         .card-cliente { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); }
-        .info h3 { margin: 0; font-size: 15px; text-transform: uppercase; color: #fff; }
-        .info p { margin: 5px 0 15px; font-size: 20px; color: var(--oliva); font-weight: 800; font-family: 'Oswald', sans-serif; }
+        .info h3 { margin: 0; font-size: 15px; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
+        .info p { margin: 5px 0 15px; font-size: 22px; color: var(--oliva); font-weight: 800; font-family: 'Oswald', sans-serif; }
 
         .actions { display: flex; gap: 10px; }
-        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: center; display: flex; align-items: center; justify-content: center; }
-        .btn-cancel { flex: 1; background: rgba(255, 77, 77, 0.1); color: var(--erro); border: 1px solid var(--erro); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-cancel:hover { background: var(--erro); color: #fff; }
+        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: center; }
+        .btn-cancel { flex: 1; background: transparent; color: var(--erro); border: 1px solid var(--erro); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
 
         .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 40px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -61,7 +62,8 @@
 
 <div id="login-screen">
     <div class="login-box">
-        <h1>LOGIN</h1>
+        <p>Restricted Access</p>
+        <h1>COMANDO</h1>
         <input type="password" id="pass" class="input-pass" placeholder="••••">
         <button class="btn-login" onclick="autenticar()">Entrar</button>
     </div>
@@ -69,8 +71,8 @@
 
 <div class="app-container">
     <div class="header">
-        <h1>COMANDO</h1>
-        <p style="font-size: 9px; letter-spacing: 3px; color: #555; text-align: center; margin: 5px 0 0;">GESTÃO BARBER CADU</p>
+        <h1>AGENDA</h1>
+        <p style="font-size: 9px; letter-spacing: 3px; color: #555; text-align: center; margin: 5px 0 0;">BARBER CADU MANAGEMENT</p>
     </div>
 
     <div class="stats">
@@ -91,14 +93,8 @@
             document.getElementById('login-screen').style.transform = 'translateY(-100%)';
             setTimeout(carregarDados, 400);
         } else {
-            Swal.fire({ icon: 'error', title: 'Acesso Negado', text: 'Senha incorreta!', background: '#111', color: '#fff', confirmButtonColor: '#708238' });
+            Swal.fire({ icon: 'error', title: 'Erro', text: 'Senha incorreta', background: '#0a0a0a', color: '#fff', confirmButtonColor: '#708238' });
         }
-    }
-
-    // Função para normalizar datas e evitar erro de Hoje = 0
-    function parseData(str) {
-        const p = str.split('/');
-        return new Date(p[2], p[1] - 1, p[0]).toLocaleDateString('pt-BR');
     }
 
     async function carregarDados() {
@@ -111,24 +107,31 @@
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
             
-            const hojeObj = new Date();
-            const hojeString = hojeObj.toLocaleDateString('pt-BR');
+            // PEGAR DATA DE HOJE EXATA (DD/MM/AAAA)
+            const agora = new Date();
+            const dia = String(agora.getDate()).padStart(2, '0');
+            const mes = String(agora.getMonth() + 1).padStart(2, '0');
+            const ano = agora.getFullYear();
+            const hojeBR = `${dia}/${mes}/${ano}`;
 
             const agendamentosPorData = {};
             let hojeTotal = 0;
 
             dados.forEach(item => {
-                item.HORA = item.HORA.substring(0, 5); // Limpa segundos
-                let dataLimpa = parseData(item.DATA);
-                item.DATA = dataLimpa;
+                // Limpeza da Hora
+                item.HORA = item.HORA.split(':')[0] + ":" + item.HORA.split(':')[1];
+                
+                // DATA: Vamos usar o que está na planilha sem tentar converter para objeto Date
+                // Apenas comparamos o texto direto
+                let dataPlanilha = item.DATA.trim();
 
-                if(dataLimpa === hojeString) hojeTotal++;
+                if(dataPlanilha === hojeBR) hojeTotal++;
 
-                if(!agendamentosPorData[dataLimpa]) agendamentosPorData[dataLimpa] = [];
-                agendamentosPorData[dataLimpa].push(item);
+                if(!agendamentosPorData[dataPlanilha]) agendamentosPorData[dataPlanilha] = [];
+                agendamentosPorData[dataPlanilha].push(item);
             });
 
-            // Ordenação das datas
+            // Ordenação das datas (Texto para Data apenas para sortear)
             const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
                 const [da, ma, aa] = a.split('/');
                 const [db, mb, ab] = b.split('/');
@@ -140,7 +143,7 @@
             document.getElementById('count-hoje').innerText = hojeTotal;
 
             datasOrdenadas.forEach(data => {
-                const label = data === hojeString ? "★ HOJE" : data;
+                const label = data === hojeBR ? "★ HOJE" : data;
                 const separator = document.createElement('div');
                 separator.className = 'data-separator';
                 separator.innerText = label;
@@ -162,8 +165,8 @@
                             <p>${item.HORA}</p>
                         </div>
                         <div class="actions">
-                            <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">CONFIRMAR</a>
-                            <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}')">CANCELAR</button>
+                            <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">Confirmar</a>
+                            <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}')">Excluir</button>
                         </div>
                     `;
                     listaDoDia.appendChild(card);
@@ -174,29 +177,26 @@
     }
 
     async function cancelarAgendamento(nome) {
-        const { value: confirmed } = await Swal.fire({
-            title: 'Tem certeza?',
-            text: `Deseja cancelar o horário de ${nome}?`,
+        const { isConfirmed } = await Swal.fire({
+            title: 'Excluir horário?',
+            text: `O agendamento de ${nome} será removido.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#708238',
-            cancelButtonColor: '#333',
-            confirmButtonText: 'Sim, cancelar',
+            cancelButtonColor: '#1a1a1a',
+            confirmButtonText: 'Sim, excluir',
             cancelButtonText: 'Manter',
-            background: '#111',
+            background: '#0a0a0a',
             color: '#fff'
         });
 
-        if (confirmed) {
-            Swal.fire({ title: 'Cancelando...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: '#111', color: '#fff' });
-            
+        if (isConfirmed) {
+            Swal.fire({ title: 'Removendo...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: '#0a0a0a', color: '#fff' });
             try {
                 await fetch(`${SHEETDB_URL}/NOME/${nome}`, { method: 'DELETE' });
-                Swal.fire({ title: 'Cancelado!', text: 'O agendamento foi removido.', icon: 'success', background: '#111', color: '#fff', confirmButtonColor: '#708238' });
+                Swal.fire({ title: 'Feito!', icon: 'success', background: '#0a0a0a', color: '#fff', confirmButtonColor: '#708238' });
                 carregarDados();
-            } catch (e) {
-                Swal.fire('Erro!', 'Não foi possível conectar ao banco.', 'error');
-            }
+            } catch (e) { Swal.fire('Erro!', 'Falha ao excluir.', 'error'); }
         }
     }
 </script>
