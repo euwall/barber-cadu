@@ -77,7 +77,7 @@
             document.getElementById('login-screen').style.transform = 'translateY(-100%)';
             setTimeout(carregarDados, 400);
         } else {
-            Swal.fire({ icon: 'error', title: 'Senha Incorreta', background: '#0a0a0a', color: '#fff', confirmButtonColor: '#708238' });
+            Swal.fire({ icon: 'error', title: 'Senha Incorreta', background: '#0a0a0a', color: '#fff' });
         }
     }
 
@@ -90,7 +90,6 @@
         try {
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
-            
             const hojeBR = new Date().toLocaleDateString('pt-BR');
             const agendamentosPorData = {};
             let hojeTotal = 0;
@@ -98,7 +97,6 @@
             dados.forEach(item => {
                 let dataPlanilha = item.DATA ? item.DATA.trim() : "";
                 if(dataPlanilha === hojeBR) hojeTotal++;
-                
                 if(!agendamentosPorData[dataPlanilha]) agendamentosPorData[dataPlanilha] = [];
                 agendamentosPorData[dataPlanilha].push(item);
             });
@@ -122,10 +120,20 @@
                 agendamentosPorData[data].sort((a, b) => a.HORA.localeCompare(b.HORA));
 
                 agendamentosPorData[data].forEach(item => {
-                    // MENSAGEM CUSTOM EXPERIENCE COM CODIFICAÇÃO HEX PARA EMOJIS
-                    // %F0%9F%92%88 = Tesoura/Navalha | %F0%9F%93%85 = Calendário | %E2%9C%A1 = Estrela
-                    const nomeCliente = item.NOME.split(' ')[0]; // Pega o primeiro nome para ser mais pessoal
-                    const msg = `Ol%C3%A1%2C%20${nomeCliente}%21%20%20%0A%0AEstou%20passando%20para%20confirmar%20sua%20sess%C3%A3o%20de%20estilo%20reservada%20aqui%20no%20*Barber%20Cadu*%3A%0A%0A%F0%9F%92%88%20*${window.encodeURIComponent(item.SERVICO)}*%0A%F0%9F%93%85%20*${item.DATA}*%20%C3%A0s%20*${item.HORA}*%0A%0APodemos%20confirmar%20sua%20presen%C3%A7a%3F%20%F0%9F%91%8A`;
+                    const primeiroNome = item.NOME.split(' ')[0];
+                    
+                    // EXPERIÊNCIA CUSTOMIZADA - TEXTO DE ALTO IMPACTO
+                    const textoBase = 
+`Prezado *${primeiroNome}*, tudo bem? 🎩
+
+Sua sessão de cuidado e estilo está confirmada aqui no *Barber Cadu*. Reservamos o melhor horário para sua transformação:
+
+✨ *${item.SERVICO}*
+📅 *${item.DATA}* às *${item.HORA}*
+
+Estamos preparando tudo para te receber com exclusividade. Podemos confirmar sua chegada? 🤝`;
+
+                    const msg = encodeURIComponent(textoBase);
                     
                     const card = document.createElement('div');
                     card.className = 'card-cliente';
