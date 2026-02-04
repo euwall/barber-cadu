@@ -65,6 +65,20 @@
         } else { alert("Senha incorreta"); }
     }
 
+    // Função para padronizar qualquer data vinda da planilha para DD/MM/AAAA
+    function formatarDataBR(dataString) {
+        if(!dataString) return "";
+        // Se a data vier com hífen (AAAA-MM-DD), inverte
+        if(dataString.includes('-')) {
+            const parts = dataString.split('-');
+            if(parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        // Se vier MM/DD/AAAA (padrão americano comum em bancos de dados)
+        // Precisamos ter certeza se o que vem é M/D ou D/M. 
+        // Vamos assumir que se o primeiro número for > 12, ele já é o dia.
+        return dataString; 
+    }
+
     async function carregarDados() {
         const container = document.getElementById('lista-master');
         const loader = document.getElementById('loading');
@@ -75,32 +89,33 @@
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
             
-            // Pega a data de hoje no formato exato da planilha DD/MM/AAAA
-            const hojeDataObj = new Date();
-            const dia = String(hojeDataObj.getDate()).padStart(2, '0');
-            const mes = String(hojeDataObj.getMonth() + 1).padStart(2, '0');
-            const ano = hojeDataObj.getFullYear();
-            const hojeString = `${dia}/${mes}/${ano}`;
+            // Pega a data de hoje no sistema e força DD/MM/AAAA
+            const hoje = new Date();
+            const hojeBR = hoje.toLocaleDateString('pt-BR'); // Ex: 04/02/2026
 
             const agendamentosPorData = {};
-            let hojeQtd = 0;
+            let hojeTotal = 0;
 
             dados.forEach(item => {
-                // Limpa a hora para DD:MM
-                item.HORA = item.HORA.substring(0, 5);
+                // Força a limpeza da hora
+                item.HORA = item.HORA.split(':')[0] + ":" + item.HORA.split(':')[1];
                 
-                // Soma ao contador se for hoje
-                if(item.DATA === hojeString) {
-                    hojeQtd++;
+                // Normaliza a data que vem da planilha
+                let dataNormalizada = formatarDataBR(item.DATA);
+                item.DATA = dataNormalizada;
+
+                // Contador de hoje (comparação exata de string)
+                if(dataNormalizada === hojeBR) {
+                    hojeTotal++;
                 }
 
-                if(!agendamentosPorData[item.DATA]) { 
-                    agendamentosPorData[item.DATA] = []; 
+                if(!agendamentosPorData[dataNormalizada]) { 
+                    agendamentosPorData[dataNormalizada] = []; 
                 }
-                agendamentosPorData[item.DATA].push(item);
+                agendamentosPorData[dataNormalizada].push(item);
             });
 
-            // Ordena as Datas (DD/MM/AAAA)
+            // Ordena as Datas para exibição (DD/MM/AAAA)
             const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
                 const [da, ma, aa] = a.split('/');
                 const [db, mb, ab] = b.split('/');
@@ -109,16 +124,16 @@
 
             loader.style.display = "none";
             document.getElementById('count-total').innerText = dados.length;
-            document.getElementById('count-hoje').innerText = hojeQtd;
+            document.getElementById('count-hoje').innerText = hojeTotal;
 
             datasOrdenadas.forEach(data => {
-                const label = data === hojeString ? "HOJE" : data;
+                const label = data === hojeBR ? "HOJE" : data;
                 const separator = document.createElement('div');
                 separator.className = 'data-separator';
                 separator.innerHTML = `<span>●</span> ${label}`;
                 container.appendChild(separator);
 
-                // ORDENAR POR HORÁRIO dentro do dia
+                // Ordenar por HORA dentro do dia
                 agendamentosPorData[data].sort((a, b) => a.HORA.localeCompare(b.HORA));
 
                 const listaDoDia = document.createElement('div');
@@ -126,7 +141,7 @@
 
                 agendamentosPorData[data].forEach(item => {
                     const msg = window.encodeURIComponent(
-                        `Olá ${item.NOME}! Aqui é do Barber Cadu. 💈\nPassando para confirmar seu horário às ${item.HORA} no dia ${item.DATA}. Tudo certo?`
+                        `Olá ${item.NOME}! Aqui é do Barber Cadu. 💈\nConfirmo seu horário: ${item.HORA} em ${item.DATA}. Até lá!`
                     );
 
                     const card = document.createElement('div');
@@ -140,7 +155,7 @@
                         </div>
                         <div class="actions">
                             <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">CONFIRMAR</a>
-                            <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}', '${item.HORA}')">Cancelar</button>
+                            <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}')">Cancelar</button>
                         </div>
                     `;
                     listaDoDia.appendChild(card);
@@ -150,14 +165,11 @@
         } catch (e) { console.error(e); }
     }
 
-    async function cancelarAgendamento(nome, hora) {
-        if(!confirm(`Deseja realmente cancelar o agendamento de ${nome}?`)) return;
+    async function cancelarAgendamento(nome) {
+        if(!confirm(`Deseja cancelar o agendamento de ${nome}?`)) return;
         try {
-            const res = await fetch(`${SHEETDB_URL}/NOME/${nome}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            if(res.ok) { alert("Agendamento removido!"); carregarDados(); }
+            await fetch(`${SHEETDB_URL}/NOME/${nome}`, { method: 'DELETE' });
+            carregarDados();
         } catch (e) { alert("Erro ao deletar."); }
     }
 </script>
