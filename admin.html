@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Barber Cadu Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --oliva: #708238; --bg: #0a0a0a; --card: #161616; }
+        
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
+            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
+        }
+
+        .header { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); text-transform: uppercase; margin: 0; font-size: 1.5rem; }
+
+        .stats { display: flex; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 800px; }
+        .stat-card { background: var(--card); padding: 15px; border-radius: 12px; flex: 1; border: 1px solid #222; text-align: center; }
+        .stat-card span { display: block; font-size: 0.7rem; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card b { font-size: 1.2rem; color: var(--oliva); }
+
+        .lista-agendamentos { width: 100%; max-width: 800px; display: grid; gap: 15px; }
+        
+        .agendamento-card {
+            background: var(--card); border-radius: 15px; padding: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 5px solid var(--oliva); transition: 0.3s;
+        }
+
+        .info h3 { margin: 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .info p { margin: 5px 0 0; font-size: 0.8rem; color: #888; }
+        .info b { color: var(--oliva); }
+
+        .actions { display: flex; gap: 10px; }
+        
+        .btn-zap { 
+            background: #25d366; color: #000; padding: 10px 15px; border-radius: 8px; 
+            text-decoration: none; font-weight: 800; font-size: 0.7rem; text-transform: uppercase;
+        }
+
+        .loader { border: 4px solid #333; border-top: 4px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin-top: 50px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Controle de Agenda</h1>
+    <button onclick="buscarAgendamentos()" style="background:none; border:1px solid #333; color:#fff; padding:5px 10px; border-radius:5px; cursor:pointer;">Atualizar</button>
+</div>
+
+<div class="stats">
+    <div class="stat-card"><span>Total</span><b id="total-count">0</b></div>
+    <div class="stat-card"><span>Hoje</span><b id="today-count">0</b></div>
+</div>
+
+<div id="loading" class="loader"></div>
+<div class="lista-agendamentos" id="lista"></div>
+
+<script>
+    async function buscarAgendamentos() {
+        const lista = document.getElementById('lista');
+        const loading = document.getElementById('loading');
+        lista.innerHTML = "";
+        loading.style.display = "block";
+
+        try {
+            const response = await fetch("https://sheetdb.io/api/v1/iy90yzs5eyolz");
+            const dados = await response.json();
+            
+            // Inverter para mostrar os mais novos primeiro
+            dados.reverse();
+
+            loading.style.display = "none";
+            document.getElementById('total-count').innerText = dados.length;
+            
+            const hoje = new Date().toLocaleDateString('pt-BR');
+            let hojeCount = 0;
+
+            dados.forEach(ag => {
+                if(ag.DATA === hoje) hojeCount++;
+
+                const card = document.createElement('div');
+                card.className = 'agendamento-card';
+                card.innerHTML = `
+                    <div class="info">
+                        <h3>${ag.NOME}</h3>
+                        <p>Dia: <b>${ag.DATA}</b> às <b>${ag.HORA}</b></p>
+                    </div>
+                    <div class="actions">
+                        <a href="https://wa.me/55${ag.TELEFONE}" target="_blank" class="btn-zap">WhatsApp</a>
+                    </div>
+                `;
+                lista.appendChild(card);
+            });
+            document.getElementById('today-count').innerText = hojeCount;
+
+        } catch (error) {
+            alert("Erro ao carregar dados.");
+        }
+    }
+
+    // Carregar ao abrir
+    buscarAgendamentos();
+</script>
+
+</body>
+</html>
