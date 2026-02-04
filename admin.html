@@ -12,7 +12,7 @@
         * { box-sizing: border-box; }
         body, html { height: 100%; margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
 
-        /* LOGIN VOLTANDO AO ESTILO TERMINAL + CENTRALIZAÇÃO TOTAL */
+        /* LOGIN CENTRALIZADO */
         #login-screen {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: var(--bg); z-index: 999; 
@@ -35,8 +35,36 @@
         }
 
         /* PAINEL CENTRALIZADO */
-        .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; }
+        .app-container { 
+            width: 100%; 
+            max-width: 450px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            width: 100%;
+        }
+        .header h1 { 
+            font-family: 'Oswald', sans-serif; 
+            color: var(--oliva); 
+            font-size: 32px; 
+            margin: 0; 
+            text-align: center;
+        }
+        .header p { 
+            font-size: 9px; 
+            letter-spacing: 3px; 
+            color: #555; 
+            text-align: center; 
+            margin: 5px 0 0; 
+            text-transform: uppercase;
+        }
         
         .stats { display: flex; gap: 15px; margin: 30px 0; width: 100%; }
         .stat-box { background: var(--card); flex: 1; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
@@ -51,7 +79,7 @@
         .info p { margin: 5px 0 15px; font-size: 22px; color: var(--oliva); font-weight: 800; font-family: 'Oswald', sans-serif; }
 
         .actions { display: flex; gap: 10px; }
-        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: center; }
+        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: center; display: flex; align-items: center; justify-content: center; }
         .btn-cancel { flex: 1; background: transparent; color: var(--erro); border: 1px solid var(--erro); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
 
         .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 40px; }
@@ -72,7 +100,7 @@
 <div class="app-container">
     <div class="header">
         <h1>AGENDA</h1>
-        <p style="font-size: 9px; letter-spacing: 3px; color: #555; text-align: center; margin: 5px 0 0;">BARBER CADU MANAGEMENT</p>
+        <p>BARBER CADU MANAGEMENT</p>
     </div>
 
     <div class="stats">
@@ -107,7 +135,6 @@
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
             
-            // PEGAR DATA DE HOJE EXATA (DD/MM/AAAA)
             const agora = new Date();
             const dia = String(agora.getDate()).padStart(2, '0');
             const mes = String(agora.getMonth() + 1).padStart(2, '0');
@@ -118,11 +145,7 @@
             let hojeTotal = 0;
 
             dados.forEach(item => {
-                // Limpeza da Hora
                 item.HORA = item.HORA.split(':')[0] + ":" + item.HORA.split(':')[1];
-                
-                // DATA: Vamos usar o que está na planilha sem tentar converter para objeto Date
-                // Apenas comparamos o texto direto
                 let dataPlanilha = item.DATA.trim();
 
                 if(dataPlanilha === hojeBR) hojeTotal++;
@@ -131,7 +154,6 @@
                 agendamentosPorData[dataPlanilha].push(item);
             });
 
-            // Ordenação das datas (Texto para Data apenas para sortear)
             const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
                 const [da, ma, aa] = a.split('/');
                 const [db, mb, ab] = b.split('/');
