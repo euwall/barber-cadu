@@ -5,102 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barber Cadu | Precision & Pulse</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root { --oliva: #708238; --neon: #8cb369; --bg: #0a0a0a; }
-        
-        body {
-            background: var(--bg);
-            color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 450px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 40px 20px; text-align: center; margin: 20px 0; }
         h1 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--oliva); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
         .slogan { font-size: 0.6rem; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-bottom: 30px; }
 
-        /* --- MELHORIA NA FONTE DE DIGITAÇÃO --- */
-        .input-field {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px;
-            border-radius: 12px;
-            color: #fff;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            outline: none;
-            
-            /* Tipografia refinada para o texto digitado */
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 400;
-            letter-spacing: 1.5px; /* Deixa o texto mais "arejado" e moderno */
-            text-transform: uppercase; /* Força um visual mais uniforme e autoritário */
-            transition: 0.4s;
-        }
+        .input-field { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 12px; color: #fff; margin-bottom: 15px; box-sizing: border-box; outline: none; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; transition: 0.4s; }
+        .input-field:focus { border-color: var(--oliva); background: rgba(112, 130, 56, 0.05); }
 
-        .input-field::placeholder {
-            color: rgba(255,255,255,0.2);
-            font-size: 0.75rem;
-            letter-spacing: 2px;
-            font-weight: 600;
-        }
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .service-item { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        .service-item.active { background: var(--oliva); color: #000; border-color: var(--oliva); font-weight: 800; }
 
-        .input-field:focus { 
-            border-color: var(--oliva); 
-            background: rgba(112, 130, 56, 0.05);
-            box-shadow: 0 0 15px rgba(112, 130, 56, 0.1);
-        }
-
-        /* NAVEGAÇÃO DO CALENDÁRIO */
-        .calendar-wrapper { position: relative; display: flex; align-items: center; margin: 20px 0; }
-        .date-slider { display: flex; overflow-x: auto; gap: 12px; padding: 10px 5px; scrollbar-width: none; scroll-behavior: smooth; }
+        .calendar-wrapper { position: relative; display: flex; align-items: center; margin: 15px 0; }
+        .date-slider { display: flex; overflow-x: auto; gap: 10px; padding: 10px 5px; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .date-slider::-webkit-scrollbar { display: none; }
-        .nav-btn { background: rgba(255, 255, 255, 0.05); border: none; color: var(--oliva); width: 35px; height: 35px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; }
-        .nav-btn:hover { background: var(--oliva); color: #000; }
+        .nav-btn { background: rgba(255, 255, 255, 0.05); border: none; color: var(--oliva); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
 
-        .date-item {
-            min-width: 60px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 15px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .date-item span:first-child { font-size: 0.6rem; text-transform: uppercase; opacity: 0.5; }
-        .date-item span:last-child { font-size: 1.2rem; font-weight: 800; }
-        .date-item.active { background: var(--oliva); color: #000; transform: scale(1.1); box-shadow: 0 0 20px rgba(112, 130, 56, 0.6); }
+        .date-item { min-width: 60px; height: 75px; background: rgba(255,255,255,0.04); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05); }
+        .date-item span:first-child { font-size: 0.55rem; text-transform: uppercase; opacity: 0.5; }
+        .date-item span:last-child { font-size: 1.1rem; font-weight: 800; }
+        .date-item.active { background: var(--oliva); color: #000; transform: scale(1.05); }
 
-        /* GRADE DE HORÁRIOS */
-        .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .time-slot {
-            padding: 14px; background: rgba(255,255,255,0.05); border-radius: 12px;
-            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.05); color: #ccc; text-align: center;
-        }
-        .time-slot.active { 
-            background: var(--oliva); color: #000; border-color: var(--neon);
-            transform: scale(1.05); box-shadow: 0 0 15px rgba(112, 130, 56, 0.5); font-weight: 800;
-        }
+        .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+        .time-slot { padding: 12px; background: rgba(255,255,255,0.04); border-radius: 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); color: #ccc; text-align: center; }
+        .time-slot.active { background: var(--oliva); color: #000; font-weight: 800; }
+        .time-slot.disabled { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; pointer-events: none; }
 
-        .btn-confirm {
-            width: 100%; padding: 20px; margin-top: 30px; border-radius: 15px; border: none;
-            background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase;
-            cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 1px; transition: 0.4s;
-        }
-        .btn-confirm:hover { filter: brightness(1.2); box-shadow: 0 10px 30px rgba(112, 130, 56, 0.4); }
+        .btn-confirm { width: 100%; padding: 20px; margin-top: 30px; border-radius: 15px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -110,90 +45,156 @@
     <p class="slogan">Evoluindo sua Identidade.</p>
 
     <form id="form-agendamento">
-        <input type="text" id="nome" class="input-field" placeholder="DIGITE SEU NOME" required oninput="this.value = this.value.replace(/[0-9]/g, '')">
-        <input type="text" id="whatsapp" class="input-field" placeholder="SEU WHATSAPP (DDD)" maxlength="11" required oninput="this.value = this.value.replace(/\D/g, '')">
+        <input type="text" id="nome" class="input-field" placeholder="DIGITE SEU NOME" required>
+        <input type="text" id="whatsapp" class="input-field" placeholder="SEU WHATSAPP (DDD)" maxlength="11" required>
 
-        <p style="text-align: left; font-size: 0.75rem; color: var(--oliva); font-weight: 800; letter-spacing: 1px;">CALENDÁRIO</p>
-        
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">SERVIÇO</p>
+        <div class="service-grid">
+            <div class="service-item" onclick="selectService(this, 'Cabelo')">Cabelo</div>
+            <div class="service-item" onclick="selectService(this, 'Barba')">Barba</div>
+            <div class="service-item" onclick="selectService(this, 'Cabelo e Barba')">Cabelo e Barba</div>
+            <div class="service-item" onclick="selectService(this, 'Sobrancelha')">Sobrancelha</div>
+        </div>
+        <input type="hidden" id="servico_final" required>
+
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; letter-spacing: 1px;">CALENDÁRIO</p>
         <div class="calendar-wrapper">
             <button type="button" class="nav-btn" onclick="scrollSlider(-1)">❮</button>
             <div class="date-slider" id="dateSlider"></div>
             <button type="button" class="nav-btn" onclick="scrollSlider(1)">❯</button>
         </div>
-        <input type="hidden" id="data_final">
+        <input type="hidden" id="data_final" required>
 
-        <p style="text-align: left; font-size: 0.75rem; color: var(--oliva); font-weight: 800; margin-top: 20px; letter-spacing: 1px;">HORÁRIOS</p>
-        <div class="time-grid" id="timeGrid">
-            <div class="time-slot">09:00</div><div class="time-slot">10:00</div><div class="time-slot">11:00</div>
-            <div class="time-slot">14:00</div><div class="time-slot">15:00</div><div class="time-slot">16:00</div>
-            <div class="time-slot">17:00</div><div class="time-slot">18:00</div><div class="time-slot">19:00</div>
-        </div>
-        <input type="hidden" id="hora_final">
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; margin-top: 15px; letter-spacing: 1px;">HORÁRIO</p>
+        <div class="time-grid" id="timeGrid"></div>
+        <input type="hidden" id="hora_final" required>
 
         <button type="submit" class="btn-confirm" id="btnConfirm">Confirmar Agendamento</button>
     </form>
 </div>
 
 <script>
+    const SHEETDB_URL = "https://sheetdb.io/api/v1/ffdn4idf5uxon";
     const slider = document.getElementById('dateSlider');
-    const inputData = document.getElementById('data_final');
-    const inputHora = document.getElementById('hora_final');
+    const timeGrid = document.getElementById('timeGrid');
+    const horariosPadrao = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+    let agendamentosOcupados = [];
 
-    function scrollSlider(direction) {
-        slider.scrollBy({ left: direction * 210, behavior: 'smooth' });
+    async function fetchOcupados() {
+        try {
+            const res = await fetch(SHEETDB_URL);
+            agendamentosOcupados = await res.json();
+            renderCalendar();
+        } catch (e) { console.error("Erro ao ler agenda"); }
     }
 
-    const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-    for(let i=0; i<30; i++) {
-        let d = new Date();
-        d.setDate(d.getDate() + i);
-        if(d.getDay() === 0) continue;
+    function scrollSlider(direction) { slider.scrollBy({ left: direction * 150, behavior: 'smooth' }); }
 
-        const item = document.createElement('div');
-        item.className = 'date-item';
-        item.innerHTML = `<span>${diasSemana[d.getDay()]}</span><span>${d.getDate()}</span>`;
-        item.onclick = () => {
-            document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
-            item.classList.add('active');
-            inputData.value = d.toLocaleDateString('pt-BR');
-        };
-        slider.appendChild(item);
+    function selectService(el, servico) {
+        document.querySelectorAll('.service-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('servico_final').value = servico;
     }
 
-    document.querySelectorAll('.time-slot').forEach(slot => {
-        slot.onclick = () => {
-            document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('active'));
-            slot.classList.add('active');
-            inputHora.value = slot.innerText;
-        };
-    });
+    function renderCalendar() {
+        const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        slider.innerHTML = '';
+        for(let i=0; i<30; i++) {
+            let d = new Date();
+            d.setDate(d.getDate() + i);
+            if(d.getDay() === 1) continue; // Bloqueia Segundas
+
+            const item = document.createElement('div');
+            item.className = 'date-item';
+            const dataBR = d.toLocaleDateString('pt-BR');
+            item.innerHTML = `<span>${diasSemana[d.getDay()]}</span><span>${d.getDate()}</span>`;
+            
+            item.onclick = () => {
+                document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById('data_final').value = dataBR;
+                renderTimeSlots(dataBR);
+            };
+            slider.appendChild(item);
+        }
+    }
+
+    function renderTimeSlots(dataSelecionada) {
+        timeGrid.innerHTML = '';
+        const agora = new Date();
+        const hojeBR = agora.toLocaleDateString('pt-BR');
+        const horaAtual = agora.getHours();
+        const minAtual = agora.getMinutes();
+
+        horariosPadrao.forEach(hora => {
+            const slot = document.createElement('div');
+            slot.className = 'time-slot';
+            slot.innerText = hora;
+
+            // Bloqueio de horários já agendados na planilha
+            const jaReservado = agendamentosOcupados.some(a => 
+                a.DATA.trim() === dataSelecionada.trim() && a.HORA.trim().substring(0,5) === hora.trim()
+            );
+            
+            // Bloqueio de horários que já passaram no dia de hoje
+            const [hSlot, mSlot] = hora.split(':').map(Number);
+            const jaPassou = (dataSelecionada === hojeBR && (hSlot < horaAtual || (hSlot === horaAtual && minAtual >= 0)));
+
+            if (jaReservado || jaPassou) {
+                slot.classList.add('disabled');
+            } else {
+                slot.onclick = () => {
+                    document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
+                    slot.classList.add('active');
+                    document.getElementById('hora_final').value = hora;
+                };
+            }
+            timeGrid.appendChild(slot);
+        });
+    }
 
     document.getElementById('form-agendamento').onsubmit = async (e) => {
         e.preventDefault();
-        if(!inputData.value || !inputHora.value) return alert("Selecione data e horário!");
         const btn = document.getElementById('btnConfirm');
+        const data = document.getElementById('data_final').value;
+        const hora = document.getElementById('hora_final').value;
+        const servico = document.getElementById('servico_final').value;
+
+        if(!data || !hora || !servico) {
+            Swal.fire({ icon: 'warning', title: 'Atenção', text: 'Selecione serviço, data e horário!', background: '#0a0a0a', color: '#fff' });
+            return;
+        }
+
         btn.innerText = "RESERVANDO...";
         btn.disabled = true;
 
         try {
-            await fetch("https://sheetdb.io/api/v1/iy90yzs5eyolz", {
+            await fetch(SHEETDB_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     data: [{
                         "NOME": document.getElementById('nome').value,
                         "TELEFONE": document.getElementById('whatsapp').value,
-                        "DATA": inputData.value,
-                        "HORA": inputHora.value
+                        "SERVICO": servico,
+                        "DATA": data,
+                        "HORA": hora
                     }]
                 })
             });
-            window.location.href = "sobre.html";
+            
+            // Feedback de sucesso e reload para atualizar horários locais
+            Swal.fire({ icon: 'success', title: 'Agendado!', text: 'Sua experiência foi reservada.', background: '#0a0a0a', color: '#fff', confirmButtonColor: '#708238' })
+            .then(() => { window.location.reload(); });
+            
         } catch {
-            alert("Falha na conexão.");
+            Swal.fire('Erro!', 'Falha ao salvar. Tente novamente.', 'error');
             btn.disabled = false;
+            btn.innerText = "Confirmar Agendamento";
         }
     };
+
+    fetchOcupados();
 </script>
 </body>
 </html>
