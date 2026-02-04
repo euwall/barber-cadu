@@ -108,7 +108,7 @@
             document.getElementById('count-hoje').innerText = hojeTotal;
 
             datasOrdenadas.forEach(data => {
-                const label = data === hojeBR ? "★ HOJE" : data;
+                const label = data === hojeBR ? "HOJE" : data;
                 const separator = document.createElement('div');
                 separator.className = 'data-separator';
                 separator.innerText = label;
@@ -118,24 +118,27 @@
 
                 agendamentosPorData[data].forEach(item => {
                     const nomeCliente = item.NOME.split(' ')[0];
+                    const servicoText = item.SERVICO;
                     
-                    // MENSAGEM LIMPA - SEM SALVE E SEM FRASE FINAL
-                    // CONSTRUÇÃO COM STRING LITERAL PARA PRESERVAR EMOJIS NATIVOS
-                    const linha1 = `${nomeCliente}, beleza?`;
-                    const linha2 = `Passando pra confirmar seu horário no *Barber Cadu*:`;
-                    const linha3 = `💈 *${item.SERVICO}*`;
-                    const linha4 = `⌛ *${item.DATA}* às *${item.HORA}*`;
-                    const linha5 = `Confirmado? ✅`;
+                    // MENSAGEM: AMIGÁVEL, SEM "SALVE", SEM EMOJIS E SEM FRASE FINAL.
+                    const textoBase = 
+`${nomeCliente}, tudo certo? 
 
-                    const msgCompleta = `${linha1}\n\n${linha2}\n\n${linha3}\n${linha4}\n\n${linha5}`;
-                    const msg = encodeURIComponent(msgCompleta);
+Passando para confirmar seu horario aqui no Barber Cadu:
+
+${servicoText}
+Data: ${item.DATA} as ${item.HORA}
+
+Confirmado?`;
+
+                    const msg = encodeURIComponent(textoBase);
 
                     const card = document.createElement('div');
                     card.className = 'card-cliente';
                     card.innerHTML = `
                         <div class="info">
                             <h3>${item.NOME}</h3>
-                            <span class="servico-tag">⚡ ${item.SERVICO}</span>
+                            <span class="servico-tag">SESSAO: ${item.SERVICO}</span>
                             <div class="horario">${item.HORA}</div>
                         </div>
                         <div class="actions">
