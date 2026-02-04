@@ -7,72 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --oliva: #708238; --bg: #0a0a0a; --card: rgba(255,255,255,0.05); --erro: #9e2a2a; }
-        
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            margin: 0; padding: 0; display: flex; justify-content: center; align-items: flex-start;
-            min-height: 100vh; overflow-x: hidden;
-        }
-
-        /* TELA DE LOGIN */
-        #login-screen {
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: var(--bg); z-index: 999; display: flex; 
-            justify-content: center; align-items: center;
-            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        .login-box { 
-            width: 90%; max-width: 350px; text-align: center; 
-            background: rgba(255,255,255,0.02); padding: 40px 20px;
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-        }
-        .login-box h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 28px; letter-spacing: 3px; margin-bottom: 20px; }
-        .input-pass {
-            width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
-            background: #000; color: var(--oliva); text-align: center; font-size: 20px; outline: none; margin-bottom: 20px; box-sizing: border-box;
-        }
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; min-height: 100vh; }
+        #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 999; display: flex; justify-content: center; align-items: center; transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
+        .login-box { width: 90%; max-width: 350px; text-align: center; background: rgba(255,255,255,0.02); padding: 40px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(10px); }
+        .input-pass { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #000; color: var(--oliva); text-align: center; font-size: 20px; outline: none; margin-bottom: 20px; box-sizing: border-box; }
         .btn-login { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; }
-
-        /* PAINEL */
         .app-container { width: 100%; max-width: 450px; padding: 40px 20px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; }
         .header { text-align: center; margin-bottom: 30px; width: 100%; }
         .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; }
-        
         .stats { display: flex; gap: 15px; margin-bottom: 30px; width: 100%; }
         .stat-box { background: var(--card); flex: 1; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
         .stat-box b { font-size: 24px; color: var(--oliva); font-family: 'Oswald', sans-serif; }
         .stat-box span { display: block; font-size: 9px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-
-        /* SEPARADOR DE DATA */
-        .data-separator {
-            width: 100%; padding: 15px 0 10px 5px; margin-top: 15px;
-            color: var(--oliva); font-size: 11px; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px;
-            border-bottom: 1px solid rgba(112, 130, 56, 0.2);
-        }
-
+        .data-separator { width: 100%; padding: 15px 0 10px 5px; margin-top: 15px; color: var(--oliva); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(112, 130, 56, 0.2); }
         .lista { display: grid; gap: 12px; width: 100%; margin-top: 10px; }
-        
-        .card-cliente {
-            background: var(--card); border-radius: 20px; padding: 18px;
-            display: flex; flex-direction: column; gap: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .card-cliente { background: var(--card); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .info h3 { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #eee; }
         .info p { margin: 4px 0 0; font-size: 18px; color: var(--oliva); font-weight: 800; font-family: 'Oswald', sans-serif; }
-
         .actions { display: flex; gap: 10px; }
-        .btn-zap { 
-            flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 10px; 
-            text-decoration: none; font-weight: 800; font-size: 10px; text-transform: uppercase; text-align: center;
-        }
-        .btn-cancel { 
-            flex: 1; background: transparent; color: var(--erro); border: 1px solid var(--erro); 
-            padding: 12px; border-radius: 10px; font-weight: 800; font-size: 10px; text-transform: uppercase; cursor: pointer;
-        }
-
+        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 800; font-size: 10px; text-transform: uppercase; text-align: center; }
+        .btn-cancel { flex: 1; background: transparent; color: var(--erro); border: 1px solid var(--erro); padding: 12px; border-radius: 10px; font-weight: 800; font-size: 10px; text-transform: uppercase; cursor: pointer; }
         .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; margin: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -92,12 +46,10 @@
         <h1>AGENDA</h1>
         <p style="font-size: 9px; letter-spacing: 3px; color: #555;">CADU MANAGEMENT</p>
     </div>
-
     <div class="stats">
         <div class="stat-box"><span>Hoje</span><b id="count-hoje">0</b></div>
         <div class="stat-box"><span>Total</span><b id="count-total">0</b></div>
     </div>
-
     <div id="loading" class="loader" style="display: none;"></div>
     <div id="lista-master" style="width: 100%;"></div>
 </div>
@@ -123,19 +75,32 @@
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
             
-            const agendamentosPorData = {};
-            
-            // TRATAMENTO DOS DADOS (DATA E HORA)
-            dados.forEach(item => {
-                // Remove os segundos da hora (ex: 09:00:00 -> 09:00)
-                item.HORA = item.HORA.substring(0, 5);
+            // Pega a data de hoje no formato exato da planilha DD/MM/AAAA
+            const hojeDataObj = new Date();
+            const dia = String(hojeDataObj.getDate()).padStart(2, '0');
+            const mes = String(hojeDataObj.getMonth() + 1).padStart(2, '0');
+            const ano = hojeDataObj.getFullYear();
+            const hojeString = `${dia}/${mes}/${ano}`;
 
-                // Garante o agrupamento
-                if(!agendamentosPorData[item.DATA]) { agendamentosPorData[item.DATA] = []; }
+            const agendamentosPorData = {};
+            let hojeQtd = 0;
+
+            dados.forEach(item => {
+                // Limpa a hora para DD:MM
+                item.HORA = item.HORA.substring(0, 5);
+                
+                // Soma ao contador se for hoje
+                if(item.DATA === hojeString) {
+                    hojeQtd++;
+                }
+
+                if(!agendamentosPorData[item.DATA]) { 
+                    agendamentosPorData[item.DATA] = []; 
+                }
                 agendamentosPorData[item.DATA].push(item);
             });
 
-            // Ordenação por data DD/MM/AAAA
+            // Ordena as Datas (DD/MM/AAAA)
             const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
                 const [da, ma, aa] = a.split('/');
                 const [db, mb, ab] = b.split('/');
@@ -144,23 +109,22 @@
 
             loader.style.display = "none";
             document.getElementById('count-total').innerText = dados.length;
-            
-            const hoje = new Date().toLocaleDateString('pt-BR');
-            let hojeQtd = 0;
+            document.getElementById('count-hoje').innerText = hojeQtd;
 
             datasOrdenadas.forEach(data => {
-                const label = data === hoje ? "HOJE" : data;
+                const label = data === hojeString ? "HOJE" : data;
                 const separator = document.createElement('div');
                 separator.className = 'data-separator';
                 separator.innerHTML = `<span>●</span> ${label}`;
                 container.appendChild(separator);
 
+                // ORDENAR POR HORÁRIO dentro do dia
+                agendamentosPorData[data].sort((a, b) => a.HORA.localeCompare(b.HORA));
+
                 const listaDoDia = document.createElement('div');
                 listaDoDia.className = 'lista';
 
                 agendamentosPorData[data].forEach(item => {
-                    if(data === hoje) hojeQtd++;
-                    
                     const msg = window.encodeURIComponent(
                         `Olá ${item.NOME}! Aqui é do Barber Cadu. 💈\nPassando para confirmar seu horário às ${item.HORA} no dia ${item.DATA}. Tudo certo?`
                     );
@@ -183,28 +147,18 @@
                 });
                 container.appendChild(listaDoDia);
             });
-            document.getElementById('count-hoje').innerText = hojeQtd;
         } catch (e) { console.error(e); }
     }
 
     async function cancelarAgendamento(nome, hora) {
         if(!confirm(`Deseja realmente cancelar o agendamento de ${nome}?`)) return;
-        
-        // No SheetDB, o DELETE via URL busca a coluna: /NOME/valor
-        // CUIDADO: Se tiver dois nomes iguais, pode deletar ambos. O ideal é o nome ser único ou usar ID.
         try {
             const res = await fetch(`${SHEETDB_URL}/NOME/${nome}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' }
             });
-            
-            if(res.ok) {
-                alert("Agendamento removido!");
-                carregarDados(); // Recarrega a lista
-            }
-        } catch (e) {
-            alert("Erro ao deletar.");
-        }
+            if(res.ok) { alert("Agendamento removido!"); carregarDados(); }
+        } catch (e) { alert("Erro ao deletar."); }
     }
 </script>
 </body>
