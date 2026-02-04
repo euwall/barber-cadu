@@ -118,18 +118,17 @@
 
                 agendamentosPorData[data].forEach(item => {
                     const nomeCliente = item.NOME.split(' ')[0];
-                    const servicoText = item.SERVICO;
-                    
-                    // MENSAGEM: AMIGÁVEL, SEM "SALVE", SEM EMOJIS E SEM FRASE FINAL.
+                    const horaLimpa = item.HORA.substring(0, 5);
+
+                    // MENSAGEM CUSTOM EXPERIENCE - FOCO NO ENCONTRO, SEM TERMOS FORMAIS
                     const textoBase = 
-`${nomeCliente}, tudo certo? 
+`${nomeCliente}, beleza? 
 
-Passando para confirmar seu horario aqui no Barber Cadu:
+Tudo pronto para o seu horario aqui no Barber Cadu! Passando apenas para confirmar nosso encontro:
 
-${servicoText}
-Data: ${item.DATA} as ${item.HORA}
+Dia ${item.DATA} as ${horaLimpa}
 
-Confirmado?`;
+Conseguimos confirmar? Ja deixei tudo preparado para te receber.`;
 
                     const msg = encodeURIComponent(textoBase);
 
@@ -138,11 +137,11 @@ Confirmado?`;
                     card.innerHTML = `
                         <div class="info">
                             <h3>${item.NOME}</h3>
-                            <span class="servico-tag">SESSAO: ${item.SERVICO}</span>
-                            <div class="horario">${item.HORA}</div>
+                            <span class="servico-tag">${item.SERVICO}</span>
+                            <div class="horario">${horaLimpa}</div>
                         </div>
                         <div class="actions">
-                            <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">WhatsApp</a>
+                            <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">Confirmar no Zap</a>
                             <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}', '${item.DATA}', '${item.HORA}')">Excluir</button>
                         </div>
                     `;
