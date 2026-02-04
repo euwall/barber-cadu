@@ -14,76 +14,69 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* TELA DE LOGIN CENTRALIZADA */
+        /* TELA DE LOGIN */
         #login-screen {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: var(--bg); z-index: 999; display: flex; 
             justify-content: center; align-items: center;
             transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
         }
-
         .login-box { 
             width: 90%; max-width: 350px; text-align: center; 
             background: rgba(255,255,255,0.02); padding: 40px 20px;
             border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
         }
-
-        .login-box h1 { 
-            font-family: 'Oswald', sans-serif; color: var(--oliva); 
-            font-size: 28px; letter-spacing: 3px; margin: 0 0 10px 0; 
-        }
-
+        .login-box h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 28px; letter-spacing: 3px; margin: 0 0 10px 0; }
         .input-pass {
-            width: 100%; padding: 15px; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: #000;
-            color: var(--oliva); text-align: center; font-size: 20px;
+            width: 100%; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
+            background: #000; color: var(--oliva); text-align: center; font-size: 20px;
             outline: none; margin-bottom: 20px; box-sizing: border-box;
-            transition: 0.3s;
         }
-
         .btn-login {
             width: 100%; padding: 15px; border-radius: 12px; border: none;
             background: var(--oliva); color: #000; font-weight: 800;
             text-transform: uppercase; font-family: 'Oswald', sans-serif;
-            cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+            cursor: pointer; letter-spacing: 2px;
         }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(112, 130, 56, 0.3); }
 
-        /* PAINEL CENTRALIZADO */
+        /* PAINEL */
         .app-container {
-            width: 100%; max-width: 450px; /* Largura de celular */
-            padding: 40px 20px; box-sizing: border-box;
+            width: 100%; max-width: 450px; padding: 40px 20px; box-sizing: border-box;
             display: flex; flex-direction: column; align-items: center;
         }
-
         .header { text-align: center; margin-bottom: 30px; width: 100%; }
         .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; }
         .header p { font-size: 10px; color: #555; letter-spacing: 4px; text-transform: uppercase; }
 
         .stats { display: flex; gap: 15px; margin-bottom: 30px; width: 100%; }
-        .stat-box { 
-            background: var(--card); flex: 1; padding: 20px; border-radius: 20px; 
-            border: 1px solid rgba(255,255,255,0.05); text-align: center;
-        }
-        .stat-box span { display: block; font-size: 9px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-box { background: var(--card); flex: 1; padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
         .stat-box b { font-size: 24px; color: var(--oliva); font-family: 'Oswald', sans-serif; }
+        .stat-box span { display: block; font-size: 9px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
 
-        .lista { display: grid; gap: 15px; width: 100%; }
+        /* SEPARADOR DE DATA */
+        .data-separator {
+            width: 100%; padding: 15px 0 10px 5px; margin-top: 15px;
+            color: var(--oliva); font-size: 11px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px;
+            border-bottom: 1px solid rgba(112, 130, 56, 0.2);
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .lista { display: grid; gap: 12px; width: 100%; margin-top: 10px; }
         
         .card-cliente {
-            background: var(--card); border-radius: 20px; padding: 20px;
+            background: var(--card); border-radius: 20px; padding: 18px;
             display: flex; justify-content: space-between; align-items: center;
             border: 1px solid rgba(255,255,255,0.05);
         }
-
         .info h3 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #eee; }
-        .info p { margin: 4px 0 0; font-size: 11px; color: #666; }
-        .info b { color: var(--oliva); }
+        .info p { margin: 4px 0 0; font-size: 14px; color: var(--oliva); font-weight: 800; font-family: 'Oswald', sans-serif; }
 
         .btn-zap { 
-            background: var(--oliva); color: #000; padding: 10px 15px; border-radius: 10px; 
-            text-decoration: none; font-weight: 800; font-size: 10px; text-transform: uppercase;
+            background: #25d366; color: #000; padding: 10px 14px; border-radius: 10px; 
+            text-decoration: none; font-weight: 800; font-size: 9px; text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; margin: 20px; }
@@ -94,18 +87,17 @@
 
 <div id="login-screen">
     <div class="login-box">
-        <p style="font-size: 9px; color: #444; letter-spacing: 3px; margin-bottom: 10px;">RESTRICTED AREA</p>
+        <p style="font-size: 9px; color: #444; letter-spacing: 3px; margin-bottom: 10px;">AUTH REQUIRED</p>
         <h1>COMANDO</h1>
         <input type="password" id="pass" class="input-pass" placeholder="SENHA">
-        <button class="btn-login" onclick="autenticar()">Acessar Painel</button>
-        <p id="error" style="color: #ff4d4d; font-size: 10px; margin-top: 15px; display: none; font-weight: 600;">SENHA INCORRETA</p>
+        <button class="btn-login" onclick="autenticar()">Acessar</button>
     </div>
 </div>
 
 <div class="app-container">
     <div class="header">
         <h1>AGENDA</h1>
-        <p>Barber Cadu Management</p>
+        <p>Organizada por Data</p>
     </div>
 
     <div class="stats">
@@ -114,66 +106,98 @@
     </div>
 
     <div id="loading" class="loader" style="display: none;"></div>
-    <div class="lista" id="lista"></div>
+    <div id="lista-master" style="width: 100%;"></div>
 </div>
 
 <script>
-    const SENHA_CORRETA = "123"; // ALTERE SUA SENHA AQUI
+    const SENHA_CORRETA = "123"; 
 
     function autenticar() {
-        const pass = document.getElementById('pass').value;
-        const screen = document.getElementById('login-screen');
-        const error = document.getElementById('error');
-
-        if(pass === SENHA_CORRETA) {
-            screen.style.transform = 'translateY(-100%)';
+        if(document.getElementById('pass').value === SENHA_CORRETA) {
+            document.getElementById('login-screen').style.transform = 'translateY(-100%)';
             setTimeout(carregarDados, 400);
-        } else {
-            error.style.display = 'block';
-            document.getElementById('pass').value = "";
-            setTimeout(() => { error.style.display = 'none'; }, 2000);
-        }
+        } else { alert("Senha incorreta"); }
     }
 
-    // Permitir "Enter" no teclado
-    document.getElementById('pass').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') { autenticar(); }
-    });
+    // Enter no teclado
+    document.getElementById('pass').addEventListener('keypress', (e) => { if(e.key === 'Enter') autenticar(); });
 
     async function carregarDados() {
-        const lista = document.getElementById('lista');
+        const container = document.getElementById('lista-master');
         const loader = document.getElementById('loading');
-        lista.innerHTML = "";
+        container.innerHTML = "";
         loader.style.display = "block";
 
         try {
             const res = await fetch("https://sheetdb.io/api/v1/iy90yzs5eyolz");
             let dados = await res.json();
-            dados.reverse();
+            
+            // 1. FORMATAÇÃO E ORDENAÇÃO
+            // Assumindo que a planilha recebe data como DD/MM/AAAA ou similar
+            // Vamos agrupar por data
+            const agendamentosPorData = {};
+            
+            dados.forEach(item => {
+                if(!agendamentosPorData[item.DATA]) {
+                    agendamentosPorData[item.DATA] = [];
+                }
+                agendamentosPorData[item.DATA].push(item);
+            });
+
+            // Ordenar as datas (mais recentes primeiro)
+            const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
+                const [da, ma, aa] = a.split('/');
+                const [db, mb, ab] = b.split('/');
+                return new Date(ab, mb-1, db) - new Date(aa, ma-1, da);
+            });
 
             loader.style.display = "none";
             document.getElementById('count-total').innerText = dados.length;
             
-            const hojeData = new Date().toLocaleDateString('pt-BR');
+            const hoje = new Date().toLocaleDateString('pt-BR');
             let hojeQtd = 0;
 
-            dados.forEach(item => {
-                if(item.DATA === hojeData) hojeQtd++;
-                const card = document.createElement('div');
-                card.className = 'card-cliente';
-                card.innerHTML = `
-                    <div class="info">
-                        <h3>${item.NOME}</h3>
-                        <p>${item.DATA} • <b>${item.HORA}</b></p>
-                    </div>
-                    <a href="https://wa.me/55${item.TELEFONE}" target="_blank" class="btn-zap">ZAP</a>
-                `;
-                lista.appendChild(card);
+            datasOrdenadas.forEach(data => {
+                // Criar Título da Data
+                const label = data === hoje ? "HOJE" : data;
+                const separator = document.createElement('div');
+                separator.className = 'data-separator';
+                separator.innerHTML = `<span>●</span> ${label}`;
+                container.appendChild(separator);
+
+                const listaDoDia = document.createElement('div');
+                listaDoDia.className = 'lista';
+
+                agendamentosPorData[data].forEach(item => {
+                    if(data === hoje) hojeQtd++;
+                    
+                    // MENSAGEM PROFISSIONAL WHATSAPP
+                    const msg = window.encodeURIComponent(
+                        `Olá ${item.NOME}! Aqui é do Barber Cadu. 💈\n\n` +
+                        `Estou passando para confirmar seu agendamento:\n` +
+                        `📅 Data: ${item.DATA}\n` +
+                        `⏰ Horário: ${item.HORA}\n\n` +
+                        `Tudo certo para o nosso horário?`
+                    );
+
+                    const card = document.createElement('div');
+                    card.className = 'card-cliente';
+                    card.innerHTML = `
+                        <div class="info">
+                            <h3>${item.NOME}</h3>
+                            <p>${item.HORA}</p>
+                        </div>
+                        <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">CONFIRMAR</a>
+                    `;
+                    listaDoDia.appendChild(card);
+                });
+                container.appendChild(listaDoDia);
             });
+            
             document.getElementById('count-hoje').innerText = hojeQtd;
+
         } catch (e) { console.error(e); }
     }
 </script>
-
 </body>
 </html>
