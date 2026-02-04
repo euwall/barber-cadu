@@ -119,12 +119,16 @@
                 agendamentosPorData[data].forEach(item => {
                     const nomeCliente = item.NOME.split(' ')[0];
                     
-                    // EXPERIÊNCIA TRANQUILA E DIRETA (EMOJIS CODIFICADOS PARA NÃO FALHAR)
-                    // %F0%9F%92%88 = Barber Pole | %E2%8F%B0 = Relógio | %E2%9C%85 = Check
-                    const saudacao = new Date().getHours() < 12 ? 'Fala' : 'Salve';
-                    const servicoURL = encodeURIComponent(item.SERVICO);
-                    
-                    const msg = `${saudacao}%20${nomeCliente}%2C%20beleza%3F%20%0A%0AS passando%20pra%20confirmar%20seu%20hor%C3%A1rio%20aqui%20no%20*Barber%20Cadu*%3A%0A%0A%F0%9F%92%88%20*${servicoURL}*%0A%E2%8F%B0%20*${item.DATA}*%20%C3%A0s%20*${item.HORA}*%0A%0AConfirmado%3F%20Aguardamos%20voc%C3%AA%20na%20cadeira%21%20%E2%9C%85`;
+                    // MENSAGEM LIMPA - SEM SALVE E SEM FRASE FINAL
+                    // CONSTRUÇÃO COM STRING LITERAL PARA PRESERVAR EMOJIS NATIVOS
+                    const linha1 = `${nomeCliente}, beleza?`;
+                    const linha2 = `Passando pra confirmar seu horário no *Barber Cadu*:`;
+                    const linha3 = `💈 *${item.SERVICO}*`;
+                    const linha4 = `⌛ *${item.DATA}* às *${item.HORA}*`;
+                    const linha5 = `Confirmado? ✅`;
+
+                    const msgCompleta = `${linha1}\n\n${linha2}\n\n${linha3}\n${linha4}\n\n${linha5}`;
+                    const msg = encodeURIComponent(msgCompleta);
 
                     const card = document.createElement('div');
                     card.className = 'card-cliente';
