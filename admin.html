@@ -3,88 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Barber Cadu</title>
+    <title>Comando | Barber Cadu</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --oliva: #708238; --bg: #0a0a0a; --card: rgba(255,255,255,0.05); }
         
         body { 
             background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; 
-            margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
+            margin: 0; padding: 0; display: flex; justify-content: center;
+            overflow-x: hidden;
         }
 
-        /* Bloqueio de Segurança */
+        /* AJUSTE DE LARGURA DO APP (MOBILE FIRST) */
+        .app-container {
+            width: 100%;
+            max-width: 450px; /* Limita a largura para não ficar gigante de lado */
+            min-height: 100vh;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* TELA DE ACESSO RESTRITO - VISUAL TERMINAL */
         #login-screen {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: var(--bg); z-index: 999; display: flex; 
             flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
         }
 
-        .header { width: 100%; max-width: 600px; text-align: center; margin-bottom: 30px; }
-        h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); text-transform: uppercase; letter-spacing: 2px; }
+        .login-box { text-align: center; width: 80%; }
+        .login-box h1 { 
+            font-family: 'Oswald', sans-serif; color: var(--oliva); 
+            font-size: 24px; letter-spacing: 5px; margin-bottom: 30px; 
+        }
 
-        .stats { display: flex; gap: 15px; margin-bottom: 20px; width: 100%; max-width: 600px; }
-        .stat-box { background: var(--card); flex: 1; padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .stat-box span { display: block; font-size: 10px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-box b { font-size: 20px; color: var(--oliva); }
+        .input-pass {
+            width: 100%; padding: 20px; border-radius: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); background: #111;
+            color: var(--oliva); text-align: center; font-size: 24px;
+            font-family: 'Oswald', sans-serif; outline: none; letter-spacing: 10px;
+            transition: 0.3s;
+        }
+        .input-pass:focus { border-color: var(--oliva); box-shadow: 0 0 20px rgba(112, 130, 56, 0.2); }
 
-        .agendamentos-container { width: 100%; max-width: 600px; display: grid; gap: 15px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; letter-spacing: 2px; }
+        .header p { font-size: 10px; color: #555; letter-spacing: 4px; text-transform: uppercase; }
+
+        .stats { display: flex; gap: 15px; margin-bottom: 30px; }
+        .stat-box { 
+            background: var(--card); flex: 1; padding: 20px; border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .stat-box span { display: block; font-size: 9px; color: #666; text-transform: uppercase; margin-bottom: 8px; font-weight: 800; }
+        .stat-box b { font-size: 26px; color: var(--oliva); font-family: 'Oswald', sans-serif; }
+
+        .lista { display: grid; gap: 15px; }
         
+        /* CARD DE CLIENTE ESTILO LUXO */
         .card-cliente {
             background: var(--card); border-radius: 20px; padding: 20px;
             display: flex; justify-content: space-between; align-items: center;
-            border-left: 6px solid var(--oliva); backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .info h3 { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
-        .info p { margin: 5px 0 0; font-size: 12px; color: #aaa; }
-        .info b { color: var(--oliva); }
-
-        .btn-whats { 
-            background: #25d366; color: #000; padding: 12px 15px; border-radius: 12px; 
-            text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase;
             transition: 0.3s;
         }
-        
-        input[type="password"] {
-            padding: 15px; border-radius: 10px; border: 1px solid var(--oliva);
-            background: #111; color: #fff; text-align: center; font-size: 18px; outline: none;
+
+        .info h3 { margin: 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: #eee; }
+        .info p { margin: 6px 0 0; font-size: 11px; color: #666; font-weight: 600; }
+        .info b { color: var(--oliva); font-size: 13px; }
+
+        .btn-zap { 
+            background: var(--oliva); color: #000; padding: 12px; border-radius: 12px; 
+            text-decoration: none; font-weight: 800; font-size: 10px; text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .loader { border: 4px solid #222; border-top: 4px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px; }
+        .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .status-badge { font-size: 8px; background: rgba(112, 130, 56, 0.1); color: var(--oliva); padding: 3px 8px; border-radius: 5px; margin-bottom: 8px; display: inline-block; }
     </style>
 </head>
 <body>
 
 <div id="login-screen">
-    <h1 style="margin-bottom: 20px;">ACESSO RESTRITO</h1>
-    <input type="password" id="pass" placeholder="SENHA DO COMANDO" oninput="checkPass()">
+    <div class="login-box">
+        <div style="font-size: 10px; color: #444; letter-spacing: 3px; margin-bottom: 10px;">ENCRYPTED ACCESS</div>
+        <h1>BARBER CONTROL</h1>
+        <input type="password" id="pass" class="input-pass" placeholder="••••" oninput="checkPass()">
+        <p id="error" style="color: #702020; font-size: 10px; margin-top: 15px; display: none; letter-spacing: 2px;">SENHA INCORRETA</p>
+    </div>
 </div>
 
-<div class="header">
-    <h1>MEUS CORTES</h1>
-    <p style="font-size: 10px; color: #555; letter-spacing: 3px;">PAINEL DE CONTROLE CADU</p>
-</div>
+<div class="app-container">
+    <div class="header">
+        <h1>AGENDA</h1>
+        <p>Painel Administrativo</p>
+    </div>
 
-<div class="stats">
-    <div class="stat-box"><span>Hoje</span><b id="count-hoje">0</b></div>
-    <div class="stat-box"><span>Total</span><b id="count-total">0</b></div>
-</div>
+    <div class="stats">
+        <div class="stat-box"><span>Cortes Hoje</span><b id="count-hoje">0</b></div>
+        <div class="stat-box"><span>Total Geral</span><b id="count-total">0</b></div>
+    </div>
 
-<div id="loading" class="loader" style="display: none;"></div>
-<div class="agendamentos-container" id="lista"></div>
+    <div id="loading" class="loader" style="display: none;"></div>
+    <div class="lista" id="lista"></div>
+</div>
 
 <script>
-    // DEFINA SUA SENHA AQUI
-    const MINHA_SENHA = cadudantas; 
+    // DEFINE TUA SENHA AQUI
+    const SENHA_MESTRA = cadubarber; 
 
     function checkPass() {
-        const val = document.getElementById('pass').value;
-        if(val === MINHA_SENHA) {
-            document.getElementById('login-screen').style.display = 'none';
-            carregarDados();
+        const input = document.getElementById('pass');
+        const screen = document.getElementById('login-screen');
+        
+        if(input.value === SENHA_MESTRA) {
+            screen.style.transform = 'translateY(-100%)'; // Desliza para cima
+            setTimeout(carregarDados, 500);
+        } else if (input.value.length >= SENHA_MESTRA.length) {
+            document.getElementById('error').style.display = 'block';
+            setTimeout(() => { 
+                input.value = ""; 
+                document.getElementById('error').style.display = 'none';
+            }, 1000);
         }
     }
 
@@ -97,9 +141,7 @@
         try {
             const res = await fetch("https://sheetdb.io/api/v1/iy90yzs5eyolz");
             let dados = await res.json();
-            
-            // Mostrar os últimos agendamentos primeiro
-            dados.reverse();
+            dados.reverse(); // Mais recentes no topo
 
             loader.style.display = "none";
             document.getElementById('count-total').innerText = dados.length;
@@ -110,21 +152,22 @@
             dados.forEach(item => {
                 if(item.DATA === hojeData) hojeQtd++;
 
-                const div = document.createElement('div');
-                div.className = 'card-cliente';
-                div.innerHTML = `
+                const card = document.createElement('div');
+                card.className = 'card-cliente';
+                card.innerHTML = `
                     <div class="info">
+                        <div class="status-badge">AGENDADO</div>
                         <h3>${item.NOME}</h3>
-                        <p>${item.DATA} às <b>${item.HORA}</b></p>
+                        <p>${item.DATA} • <b>${item.HORA}</b></p>
                     </div>
-                    <a href="https://wa.me/55${item.TELEFONE}" target="_blank" class="btn-whats">WHATSAPP</a>
+                    <a href="https://wa.me/55${item.TELEFONE}" target="_blank" class="btn-zap">CHAMAR</a>
                 `;
-                lista.appendChild(div);
+                lista.appendChild(card);
             });
             document.getElementById('count-hoje').innerText = hojeQtd;
 
         } catch (e) {
-            alert("Erro ao conectar com a planilha.");
+            console.error(e);
         }
     }
 </script>
