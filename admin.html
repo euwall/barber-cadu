@@ -5,39 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comando | Barber Cadu</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
     <style>
         :root { --oliva: #708238; --bg: #0a0a0a; --card: rgba(255,255,255,0.05); --erro: #ff4d4d; }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; }
 
-        #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 999; display: flex; justify-content: center; align-items: center; transition: 0.8s; }
+        /* Login */
+        #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 999; display: flex; justify-content: center; align-items: center; }
         .login-box { text-align: center; width: 85%; max-width: 320px; }
         .input-pass { width: 100%; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #000; color: var(--oliva); text-align: center; font-size: 24px; outline: none; margin-bottom: 15px; font-family: 'Oswald', sans-serif; }
         .btn-login { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; }
 
-        .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; text-transform: uppercase; }
-        .header p { font-size: 9px; letter-spacing: 3px; color: #555; margin: 5px 0 0; text-transform: uppercase; }
-
-        .stats { display: flex; gap: 15px; margin: 20px 0; width: 100%; }
-        .stat-box { background: var(--card); flex: 1; padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
-        .stat-box b { font-size: 24px; color: var(--oliva); font-family: 'Oswald', sans-serif; display: block; }
-        .stat-box span { font-size: 9px; color: #666; text-transform: uppercase; }
-
-        .data-separator { width: 100%; padding: 20px 0 10px; color: var(--oliva); font-size: 11px; font-weight: 800; letter-spacing: 2px; border-bottom: 1px solid rgba(112, 130, 56, 0.2); text-transform: uppercase; margin-top: 20px; text-align: center; }
+        /* Layout */
+        .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; }
+        .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; text-align: center; text-transform: uppercase; letter-spacing: 2px; }
         
-        .card-cliente { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-top: 15px; width: 100%; }
-        .info h3 { margin: 0; font-size: 14px; text-transform: uppercase; color: #fff; }
-        .info .servico-tag { font-size: 10px; color: var(--oliva); font-weight: 800; text-transform: uppercase; display: block; margin-top: 4px; }
-        .info .horario { margin: 10px 0; font-size: 26px; color: #fff; font-weight: 800; font-family: 'Oswald', sans-serif; }
+        /* Botão de Comando */
+        .btn-quick-block { 
+            width: 100%; padding: 22px; border-radius: 15px; border: 1px solid var(--oliva); 
+            background: rgba(112, 130, 56, 0.1); color: var(--oliva); font-weight: 800; 
+            text-transform: uppercase; cursor: pointer; letter-spacing: 2px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s;
+        }
+        .btn-quick-block i { font-size: 1.2rem; }
+        .btn-quick-block:active { transform: scale(0.98); background: var(--oliva); color: #000; }
 
-        .actions { display: flex; gap: 10px; }
-        .btn-zap { flex: 2; background: #25d366; color: #000; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 11px; text-transform: uppercase; text-align: center; display: flex; align-items: center; justify-content: center; }
-        .btn-cancel { flex: 1; background: transparent; color: var(--erro); border: 1px solid var(--erro); padding: 12px; border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+        /* Stats */
+        .stats { display: flex; gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: var(--card); flex: 1; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-box b { font-size: 20px; color: var(--oliva); display: block; font-family: 'Oswald'; }
+        .stat-box span { font-size: 9px; text-transform: uppercase; color: #666; }
+
+        /* Cards */
+        .data-separator { width: 100%; padding: 15px 0; color: var(--oliva); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; text-align: center; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .card-cliente { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .card-cliente.full-block { border-left: 4px solid var(--erro); }
+        .info .hora { font-family: 'Oswald'; font-size: 18px; color: var(--oliva); }
+        .info h3 { margin: 0; font-size: 13px; text-transform: uppercase; }
         
-        .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 40px; }
+        .btn-acao { padding: 10px 15px; border-radius: 8px; border: none; font-weight: 800; font-size: 10px; text-transform: uppercase; cursor: pointer; }
+        .btn-zap { background: #25d366; color: #000; text-decoration: none; margin-right: 5px; }
+        .btn-del { background: transparent; border: 1px solid #444; color: #888; }
+
+        /* Modal Customizado */
+        .swal2-popup { border-radius: 30px !important; background: #0f0f0f !important; color: #fff !important; padding: 2em 1em !important; }
+        .swal2-title { font-family: 'Oswald' !important; color: var(--oliva) !important; letter-spacing: 1px; }
+        .modal-label { font-size: 10px; color: #555; text-transform: uppercase; text-align: left; display: block; margin: 15px 0 5px 5px; font-weight: 800; }
+        
+        .modal-grid-horas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+        .chip-hora { padding: 10px 5px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 11px; cursor: pointer; }
+        .chip-hora.selected { background: var(--oliva); color: #000; border-color: var(--oliva); font-weight: 800; }
+        
+        .btn-folga { grid-column: span 4; padding: 15px; background: rgba(255, 77, 77, 0.05); border: 1px solid var(--erro); color: var(--erro); border-radius: 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
+        .btn-folga.selected { background: var(--erro); color: #000; }
+
+        /* Estilo Customizado para o Input de Calendário */
+        .flatpickr-input-custom { width: 100%; background: #1a1a1a !important; color: #fff !important; border: 1px solid #333 !important; padding: 15px !important; border-radius: 12px !important; text-align: center; font-family: 'Montserrat'; font-weight: 600; cursor: pointer; }
+
+        .loader { border: 3px solid #111; border-top: 3px solid var(--oliva); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 40px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -45,134 +78,197 @@
 
 <div id="login-screen">
     <div class="login-box">
-        <h1 style="font-family: 'Oswald'; color: var(--oliva); letter-spacing: 5px;">COMANDO</h1>
+        <h1 style="font-family: 'Oswald'; color: var(--oliva); letter-spacing: 5px;">CADU ADMIN</h1>
         <input type="password" id="pass" class="input-pass" placeholder="SENHA">
-        <button class="btn-login" onclick="autenticar()">Acessar Agenda</button>
+        <button class="btn-login" onclick="autenticar()">ENTRAR</button>
     </div>
 </div>
 
 <div class="app-container">
-    <div class="header">
-        <h1>AGENDA</h1>
-        <p>BARBER CADU MANAGEMENT</p>
-    </div>
+    <div class="header"><h1>Painel de Controle</h1></div>
+
+    <button class="btn-quick-block" onclick="abrirPainelBloqueio()">
+        <i class="fa-solid fa-sliders"></i> GERENCIAR BLOQUEIOS
+    </button>
 
     <div class="stats">
         <div class="stat-box"><b id="count-hoje">0</b><span>Hoje</span></div>
-        <div class="stat-box"><b id="count-total">0</b><span>Total</span></div>
+        <div class="stat-box"><b id="count-total">0</b><span>Agendados</span></div>
     </div>
 
     <div id="loading" class="loader" style="display: none;"></div>
-    <div id="lista-master" style="width: 100%;"></div>
+    <div id="lista-agendamentos"></div>
 </div>
 
 <script>
     const SENHA_CORRETA = "123"; 
     const SHEETDB_URL = "https://sheetdb.io/api/v1/ffdn4idf5uxon";
+    const horariosTrabalho = ["09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00", "15:20", "15:40", "16:00", "16:20", "16:40", "17:00", "17:20", "17:40", "18:00", "18:20", "18:40"];
 
     function autenticar() {
         if(document.getElementById('pass').value === SENHA_CORRETA) {
-            document.getElementById('login-screen').style.transform = 'translateY(-100%)';
-            setTimeout(carregarDados, 400);
+            document.getElementById('login-screen').style.display = 'none';
+            carregarDados();
         } else {
-            Swal.fire({ icon: 'error', title: 'Senha Incorreta', background: '#0a0a0a', color: '#fff' });
+            Swal.fire({ icon: 'error', title: 'Senha incorreta', background: '#0a0a0a', color: '#fff' });
         }
     }
 
     async function carregarDados() {
-        const container = document.getElementById('lista-master');
+        const container = document.getElementById('lista-agendamentos');
         const loader = document.getElementById('loading');
         container.innerHTML = ""; loader.style.display = "block";
 
         try {
             const res = await fetch(SHEETDB_URL);
             let dados = await res.json();
-            const hojeBR = new Date().toLocaleDateString('pt-BR');
-            const agendamentosPorData = {};
-            let hojeTotal = 0;
+            loader.style.display = "none";
 
+            const hojeBR = new Date().toLocaleDateString('pt-BR');
+            const porData = {};
+            
             dados.forEach(item => {
-                let dataPlanilha = item.DATA ? item.DATA.trim() : "";
-                if(dataPlanilha === hojeBR) hojeTotal++;
-                if(!agendamentosPorData[dataPlanilha]) agendamentosPorData[dataPlanilha] = [];
-                agendamentosPorData[dataPlanilha].push(item);
+                if(!porData[item.DATA]) porData[item.DATA] = [];
+                porData[item.DATA].push(item);
             });
 
-            const datasOrdenadas = Object.keys(agendamentosPorData).sort((a, b) => {
+            document.getElementById('count-total').innerText = dados.length;
+            document.getElementById('count-hoje').innerText = (porData[hojeBR] || []).length;
+
+            Object.keys(porData).sort((a,b) => {
                 const [da, ma, aa] = a.split('/'); const [db, mb, ab] = b.split('/');
                 return new Date(aa, ma-1, da) - new Date(ab, mb-1, db);
-            });
-
-            loader.style.display = "none";
-            document.getElementById('count-total').innerText = dados.length;
-            document.getElementById('count-hoje').innerText = hojeTotal;
-
-            datasOrdenadas.forEach(data => {
-                const label = data === hojeBR ? "HOJE" : data;
+            }).forEach(data => {
                 const separator = document.createElement('div');
                 separator.className = 'data-separator';
-                separator.innerText = label;
+                separator.innerText = data === hojeBR ? "HOJE" : data;
                 container.appendChild(separator);
 
-                agendamentosPorData[data].sort((a, b) => a.HORA.localeCompare(b.HORA));
+                const itensDaData = porData[data];
+                const bloqueadosCount = itensDaData.filter(i => i.NOME === "BLOQUEADO").length;
 
-                agendamentosPorData[data].forEach(item => {
-                    const nomeCliente = item.NOME.split(' ')[0];
-                    const horaLimpa = item.HORA.substring(0, 5);
-
-                    // MENSAGEM CUSTOM EXPERIENCE - FOCO NO ENCONTRO, SEM TERMOS FORMAIS
-                    const textoBase = 
-`${nomeCliente}, beleza? 
-
-Tudo pronto para o seu horario aqui no Barber Cadu! Passando apenas para confirmar nosso encontro:
-
-Dia ${item.DATA} as ${horaLimpa}
-
-Conseguimos confirmar? Ja deixei tudo preparado para te receber.`;
-
-                    const msg = encodeURIComponent(textoBase);
-
+                if(bloqueadosCount >= horariosTrabalho.length - 2) {
                     const card = document.createElement('div');
-                    card.className = 'card-cliente';
+                    card.className = 'card-cliente full-block';
                     card.innerHTML = `
-                        <div class="info">
-                            <h3>${item.NOME}</h3>
-                            <span class="servico-tag">${item.SERVICO}</span>
-                            <div class="horario">${horaLimpa}</div>
-                        </div>
-                        <div class="actions">
-                            <a href="https://wa.me/55${item.TELEFONE}?text=${msg}" target="_blank" class="btn-zap">Confirmar no Zap</a>
-                            <button class="btn-cancel" onclick="cancelarAgendamento('${item.NOME}', '${item.DATA}', '${item.HORA}')">Excluir</button>
-                        </div>
+                        <div class="info"><h3 style="color:#ff4d4d"><i class="fa-solid fa-ban"></i> DIA BLOQUEADO</h3></div>
+                        <button class="btn-acao btn-del" onclick="limparDia('${data}')">LIBERAR</button>
                     `;
                     container.appendChild(card);
-                });
+                } else {
+                    itensDaData.sort((a,b) => a.HORA.localeCompare(b.HORA)).forEach(item => {
+                        const isBlocked = item.NOME === "BLOQUEADO";
+                        const card = document.createElement('div');
+                        card.className = 'card-cliente';
+                        
+                        if(isBlocked) {
+                            card.innerHTML = `
+                                <div class="info"><span class="hora">${item.HORA.substring(0,5)}</span><br><h3 style="color:#666">BLOQUEIO MANUAL</h3></div>
+                                <button class="btn-acao btn-del" onclick="removerRegistro('${item.NOME}', '${item.DATA}', '${item.HORA}')">ABRIR</button>
+                            `;
+                        } else {
+                            card.innerHTML = `
+                                <div class="info"><span class="hora">${item.HORA.substring(0,5)}</span><h3>${item.NOME.split(' ')[0]}</h3></div>
+                                <div>
+                                    <a href="https://wa.me/55${item.TELEFONE}" target="_blank" class="btn-acao btn-zap"><i class="fa-brands fa-whatsapp"></i></a>
+                                    <button class="btn-acao btn-del" onclick="removerRegistro('${item.NOME}', '${item.DATA}', '${item.HORA}')"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            `;
+                        }
+                        container.appendChild(card);
+                    });
+                }
             });
-        } catch (e) { 
-            loader.style.display = "none";
-            container.innerHTML = "<p>Erro ao carregar agenda.</p>";
+        } catch (e) { loader.style.display = "none"; }
+    }
+
+    let selecaoAtual = null;
+
+    async function abrirPainelBloqueio() {
+        const { value: formValues } = await Swal.fire({
+            title: 'CONFIGURAR BLOQUEIO',
+            background: '#0f0f0f',
+            showCancelButton: true,
+            confirmButtonText: 'SALVAR ALTERAÇÕES',
+            cancelButtonText: 'VOLTAR',
+            confirmButtonColor: '#708238',
+            cancelButtonColor: '#222',
+            html: `
+                <span class="modal-label">Selecione a Data</span>
+                <input id="sw-data" class="flatpickr-input-custom" placeholder="Toque para escolher..." readonly>
+                
+                <span class="modal-label">Selecione o Tipo</span>
+                <div class="modal-grid-horas">
+                    <button type="button" class="btn-folga" id="btn-dia-inteiro" onclick="toggleSelecao('DIA')">BLOQUEAR DIA INTEIRO</button>
+                    ${horariosTrabalho.map(h => `<button type="button" class="chip-hora" id="chip-${h.replace(':','')}" onclick="toggleSelecao('${h}')">${h}</button>`).join('')}
+                </div>
+            `,
+            didOpen: () => {
+                flatpickr("#sw-data", {
+                    locale: "pt",
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    disable: [ d => d.getDay() === 1 ] // Desativa segundas se necessário
+                });
+            },
+            preConfirm: () => {
+                const d = document.getElementById('sw-data').value;
+                if(!d) { Swal.showValidationMessage('Escolha uma data primeiro!'); return false; }
+                if(!selecaoAtual) { Swal.showValidationMessage('Escolha o que bloquear!'); return false; }
+                return { data: d, hora: selecaoAtual };
+            }
+        });
+
+        if (formValues) {
+            executarBloqueio(formValues);
+        }
+        selecaoAtual = null;
+    }
+
+    function toggleSelecao(valor) {
+        document.querySelectorAll('.chip-hora, .btn-folga').forEach(el => el.classList.remove('selected'));
+        if(selecaoAtual === valor) {
+            selecaoAtual = null;
+        } else {
+            selecaoAtual = valor;
+            const id = valor === 'DIA' ? 'btn-dia-inteiro' : `chip-${valor.replace(':','')}`;
+            document.getElementById(id).classList.add('selected');
         }
     }
 
-    async function cancelarAgendamento(nome, data, hora) {
-        const { isConfirmed } = await Swal.fire({
-            title: 'Excluir?',
-            text: `Remover ${nome} - ${hora}?`,
-            icon: 'warning', showCancelButton: true, confirmButtonColor: '#708238', background: '#0a0a0a', color: '#fff'
+    async function executarBloqueio(form) {
+        Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading() });
+        let payload = [];
+        if(form.hora === "DIA") {
+            payload = horariosTrabalho.map(h => ({ "NOME": "BLOQUEADO", "TELEFONE": "0", "SERVICO": "FOLGA", "DATA": form.data, "HORA": h }));
+        } else {
+            payload = [{ "NOME": "BLOQUEADO", "TELEFONE": "0", "SERVICO": "MANUAL", "DATA": form.data, "HORA": form.hora }];
+        }
+
+        await fetch(SHEETDB_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ data: payload })
         });
-        
-        if (isConfirmed) {
-            Swal.fire({ title: 'Removendo...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: '#0a0a0a', color: '#fff' });
-            try {
-                const deleteUrl = `${SHEETDB_URL}/NOME/${encodeURIComponent(nome)}?DATA=${encodeURIComponent(data)}&HORA=${encodeURIComponent(hora)}`;
-                const response = await fetch(deleteUrl, { method: 'DELETE' });
-                if(response.ok) {
-                    Swal.fire({ title: 'Removido!', icon: 'success', background: '#0a0a0a', color: '#fff' });
-                    carregarDados();
-                }
-            } catch (e) { 
-                Swal.fire('Erro!', 'Falha ao excluir.', 'error'); 
-            }
+        carregarDados();
+        Swal.fire({ icon: 'success', title: 'Concluído!', background: '#0a0a0a', color: '#fff' });
+    }
+
+    async function removerRegistro(nome, data, hora) {
+        const res = await Swal.fire({ title: 'Deseja excluir?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#708238', cancelButtonColor: '#222', confirmButtonText: 'SIM', cancelButtonText: 'NÃO', background: '#0a0a0a', color: '#fff' });
+        if(res.isConfirmed) {
+            await fetch(`${SHEETDB_URL}/HORA/${encodeURIComponent(hora)}?DATA=${encodeURIComponent(data)}&NOME=${encodeURIComponent(nome)}`, { method: 'DELETE' });
+            carregarDados();
+        }
+    }
+
+    async function limparDia(data) {
+        const res = await Swal.fire({ title: 'Liberar o dia?', text: 'Isso remove todos os bloqueios.', icon: 'question', showCancelButton: true, confirmButtonText: 'SIM', cancelButtonText: 'NÃO', background: '#0a0a0a', color: '#fff' });
+        if(res.isConfirmed) {
+            Swal.fire({ title: 'Limpando...', didOpen: () => Swal.showLoading() });
+            await fetch(`${SHEETDB_URL}/DATA/${encodeURIComponent(data)}`, { method: 'DELETE' });
+            carregarDados();
+            Swal.close();
         }
     }
 </script>

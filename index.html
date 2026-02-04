@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber Cadu | Precision & Pulse</title>
+    <title>Barber Cadu | Agendamento</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        :root { --oliva: #708238; --neon: #8cb369; --bg: #0a0a0a; }
+        :root { --oliva: #708238; --bg: #0a0a0a; }
         body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
         .container { width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 40px 20px; text-align: center; margin: 20px 0; }
         h1 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; color: var(--oliva); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
         .slogan { font-size: 0.6rem; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-bottom: 30px; }
         .input-field { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 18px; border-radius: 12px; color: #fff; margin-bottom: 15px; box-sizing: border-box; outline: none; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; transition: 0.4s; }
-        .input-field:focus { border-color: var(--oliva); background: rgba(112, 130, 56, 0.05); }
+        .input-field:focus { border-color: var(--oliva); }
         .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .service-item { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+        .service-item { padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.7rem; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; color: #888; text-align: center; }
         .service-item.active { background: var(--oliva); color: #000; border-color: var(--oliva); font-weight: 800; }
+        .service-item small { display: block; font-size: 0.5rem; opacity: 0.7; margin-top: 4px; }
         .calendar-wrapper { position: relative; display: flex; align-items: center; margin: 15px 0; }
         .date-slider { display: flex; overflow-x: auto; gap: 10px; padding: 10px 5px; scrollbar-width: none; scroll-behavior: smooth; width: 100%; }
         .date-slider::-webkit-scrollbar { display: none; }
@@ -28,7 +29,6 @@
         .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
         .time-slot { padding: 12px; background: rgba(255,255,255,0.04); border-radius: 10px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); color: #ccc; text-align: center; }
         .time-slot.active { background: var(--oliva); color: #000; font-weight: 800; }
-        .time-slot.disabled { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; pointer-events: none; }
         .btn-confirm { width: 100%; padding: 20px; margin-top: 30px; border-radius: 15px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
     </style>
 </head>
@@ -40,18 +40,19 @@
 
     <form id="form-agendamento">
         <input type="text" id="nome" class="input-field" placeholder="DIGITE SEU NOME" required>
-        <input type="text" id="whatsapp" class="input-field" placeholder="SEU WHATSAPP (DDD)" maxlength="11" required>
+        <input type="tel" id="whatsapp" class="input-field" placeholder="WHATSAPP (DDD)" required maxlength="15">
 
-        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">SERVIÇO</p>
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; margin-bottom: 10px;">SERVIÇO</p>
         <div class="service-grid">
-            <div class="service-item" onclick="selectService(this, 'Cabelo')">Cabelo</div>
-            <div class="service-item" onclick="selectService(this, 'Barba')">Barba</div>
-            <div class="service-item" onclick="selectService(this, 'Cabelo e Barba')">Cabelo e Barba</div>
-            <div class="service-item" onclick="selectService(this, 'Sobrancelha')">Sobrancelha</div>
+            <div class="service-item" onclick="selectService(this, 'Cabelo', 2)">Cabelo<small>40 MIN</small></div>
+            <div class="service-item" onclick="selectService(this, 'Barba', 1)">Barba<small>20 MIN</small></div>
+            <div class="service-item" onclick="selectService(this, 'Cabelo e Barba', 4)">Combo<small>1H 20MIN</small></div>
+            <div class="service-item" onclick="selectService(this, 'Sobrancelha', 1)">Sobrancelha<small>20 MIN</small></div>
         </div>
         <input type="hidden" id="servico_final" required>
+        <input type="hidden" id="slots_necessarios" value="1">
 
-        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; letter-spacing: 1px;">CALENDÁRIO</p>
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800;">CALENDÁRIO</p>
         <div class="calendar-wrapper">
             <button type="button" class="nav-btn" onclick="scrollSlider(-1)">❮</button>
             <div class="date-slider" id="dateSlider"></div>
@@ -59,7 +60,7 @@
         </div>
         <input type="hidden" id="data_final" required>
 
-        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; margin-top: 15px; letter-spacing: 1px;">HORÁRIO</p>
+        <p style="text-align: left; font-size: 0.7rem; color: var(--oliva); font-weight: 800; margin-top: 15px;">HORÁRIO DISPONÍVEL</p>
         <div class="time-grid" id="timeGrid"></div>
         <input type="hidden" id="hora_final" required>
 
@@ -71,8 +72,34 @@
     const SHEETDB_URL = "https://sheetdb.io/api/v1/ffdn4idf5uxon";
     const slider = document.getElementById('dateSlider');
     const timeGrid = document.getElementById('timeGrid');
-    const horariosPadrao = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"];
+    
+    // Almoço das 12:40 já removido daqui
+    const horariosBase = [
+        "09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20", "11:40",
+        "13:00", "13:20", "13:40", "14:00", "14:20", "14:40", "15:00", "15:20", "15:40", 
+        "16:00", "16:20", "16:40", "17:00", "17:20", "17:40", "18:00", "18:20", "18:40"
+    ];
+
     let agendamentosOcupados = [];
+
+    // Função para padronizar datas (Ex: transforma 4/2/2026 em 04/02/2026)
+    function formatarDataBR(dataStr) {
+        if(!dataStr) return "";
+        const partes = dataStr.split('/');
+        if(partes.length !== 3) return dataStr;
+        const dia = partes[0].padStart(2, '0');
+        const mes = partes[1].padStart(2, '0');
+        const ano = partes[2];
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    // Função para padronizar horas (Ex: transforma 9:00 em 09:00)
+    function formatarHoraBR(horaStr) {
+        if(!horaStr) return "";
+        let h = horaStr.trim().substring(0,5);
+        if(h.includes(':') && h.split(':')[0].length === 1) h = '0' + h;
+        return h;
+    }
 
     async function fetchOcupados() {
         try {
@@ -84,10 +111,13 @@
 
     function scrollSlider(direction) { slider.scrollBy({ left: direction * 150, behavior: 'smooth' }); }
 
-    function selectService(el, servico) {
+    function selectService(el, servico, slots) {
         document.querySelectorAll('.service-item').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
         document.getElementById('servico_final').value = servico;
+        document.getElementById('slots_necessarios').value = slots;
+        const dataSelecionada = document.getElementById('data_final').value;
+        if(dataSelecionada) renderTimeSlots(dataSelecionada);
     }
 
     function renderCalendar() {
@@ -96,16 +126,16 @@
         for(let i=0; i<30; i++) {
             let d = new Date();
             d.setDate(d.getDate() + i);
-            if(d.getDay() === 1) continue;
+            if(d.getDay() === 1) continue; 
             const item = document.createElement('div');
             item.className = 'date-item';
-            const dataBR = d.toLocaleDateString('pt-BR');
+            const dataOriginal = d.toLocaleDateString('pt-BR');
             item.innerHTML = `<span>${diasSemana[d.getDay()]}</span><span>${d.getDate()}</span>`;
             item.onclick = () => {
                 document.querySelectorAll('.date-item').forEach(el => el.classList.remove('active'));
                 item.classList.add('active');
-                document.getElementById('data_final').value = dataBR;
-                renderTimeSlots(dataBR);
+                document.getElementById('data_final').value = dataOriginal;
+                renderTimeSlots(dataOriginal);
             };
             slider.appendChild(item);
         }
@@ -113,30 +143,47 @@
 
     function renderTimeSlots(dataSelecionada) {
         timeGrid.innerHTML = '';
+        const slotsNecessarios = parseInt(document.getElementById('slots_necessarios').value);
         const agora = new Date();
-        const hojeBR = agora.toLocaleDateString('pt-BR');
-        const horaAtual = agora.getHours();
-        const minAtual = agora.getMinutes();
-        horariosPadrao.forEach(hora => {
-            const slot = document.createElement('div');
-            slot.className = 'time-slot';
-            slot.innerText = hora;
-            const jaReservado = agendamentosOcupados.some(a => 
-                a.DATA.trim() === dataSelecionada.trim() && a.HORA.trim().substring(0,5) === hora.trim()
-            );
-            const [hSlot, mSlot] = hora.split(':').map(Number);
-            const jaPassou = (dataSelecionada === hojeBR && (hSlot < horaAtual || (hSlot === horaAtual && minAtual >= 0)));
-            if (jaReservado || jaPassou) {
-                slot.classList.add('disabled');
-            } else {
+        const dataFormatadaBusca = formatarDataBR(dataSelecionada);
+
+        for (let index = 0; index < horariosBase.length; index++) {
+            const horaIncial = horariosBase[index];
+            let indisponivel = false;
+
+            for (let i = 0; i < slotsNecessarios; i++) {
+                const hVerificar = horariosBase[index + i];
+                if (!hVerificar) { indisponivel = true; break; }
+
+                // COMPARAÇÃO ULTRA-RIGOROSA
+                const ocupado = agendamentosOcupados.some(a => {
+                    const dPlanilha = formatarDataBR(a.DATA);
+                    const hPlanilha = formatarHoraBR(a.HORA);
+                    return dPlanilha === dataFormatadaBusca && hPlanilha === formatarHoraBR(hVerificar);
+                });
+
+                if (ocupado) { indisponivel = true; break; }
+            }
+
+            const [h, m] = horaIncial.split(':').map(Number);
+            const dataSlot = new Date();
+            const [dia, mes, ano] = dataSelecionada.split('/');
+            dataSlot.setFullYear(ano, mes-1, dia);
+            dataSlot.setHours(h, m, 0, 0);
+            const jaPassou = dataSlot.getTime() < (agora.getTime() + 1200000); 
+
+            if (!indisponivel && !jaPassou) {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                slot.innerText = horaIncial;
                 slot.onclick = () => {
                     document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('active'));
                     slot.classList.add('active');
-                    document.getElementById('hora_final').value = hora;
+                    document.getElementById('hora_final').value = horaIncial;
                 };
+                timeGrid.appendChild(slot);
             }
-            timeGrid.appendChild(slot);
-        });
+        }
     }
 
     document.getElementById('form-agendamento').onsubmit = async (e) => {
@@ -145,48 +192,45 @@
         const data = document.getElementById('data_final').value;
         const hora = document.getElementById('hora_final').value;
         const servico = document.getElementById('servico_final').value;
+        const slots = parseInt(document.getElementById('slots_necessarios').value);
 
         if(!data || !hora || !servico) {
-            Swal.fire({ icon: 'warning', title: 'Atenção', text: 'Selecione serviço, data e horário!', background: '#0a0a0a', color: '#fff' });
+            Swal.fire({ icon: 'warning', title: 'Atenção', text: 'Selecione serviço e horário!', background: '#0a0a0a', color: '#fff' });
             return;
         }
 
-        btn.innerText = "RESERVANDO...";
+        btn.innerText = "AGENDANDO...";
         btn.disabled = true;
 
         try {
-            const response = await fetch(SHEETDB_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    data: [{
-                        "NOME": document.getElementById('nome').value,
-                        "TELEFONE": document.getElementById('whatsapp').value,
-                        "SERVICO": servico,
-                        "DATA": data,
-                        "HORA": hora
-                    }]
-                })
-            });
+            const payload = [];
+            const indexInicio = horariosBase.indexOf(hora);
 
-            if(response.ok) {
-                Swal.fire({ 
-                    icon: 'success', 
-                    title: 'Agendado!', 
-                    text: 'Sua experiência foi reservada.', 
-                    background: '#0a0a0a', 
-                    color: '#fff', 
-                    confirmButtonColor: '#708238' 
-                }).then(() => { 
-                    window.location.href = "sobre.html"; 
+            for(let i=0; i < slots; i++) {
+                payload.push({
+                    "NOME": i === 0 ? document.getElementById('nome').value : `Ref: ${document.getElementById('nome').value}`,
+                    "TELEFONE": document.getElementById('whatsapp').value,
+                    "SERVICO": servico,
+                    "DATA": data,
+                    "HORA": horariosBase[indexInicio + i]
                 });
             }
+
+            await fetch(SHEETDB_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ data: payload })
+            });
+
+            Swal.fire({ icon: 'success', title: 'Confirmado!', background: '#0a0a0a', color: '#fff' })
+            .then(() => { location.reload(); });
+            
         } catch {
-            Swal.fire('Erro!', 'Falha ao salvar. Tente novamente.', 'error');
+            Swal.fire('Erro!', 'Tente novamente.', 'error');
             btn.disabled = false;
-            btn.innerText = "Confirmar Agendamento";
         }
     };
+
     fetchOcupados();
 </script>
 </body>
