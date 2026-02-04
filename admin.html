@@ -11,13 +11,11 @@
         * { box-sizing: border-box; }
         body, html { margin: 0; background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; }
 
-        /* LOGIN */
         #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 999; display: flex; justify-content: center; align-items: center; transition: 0.8s; }
         .login-box { text-align: center; width: 85%; max-width: 320px; }
         .input-pass { width: 100%; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #000; color: var(--oliva); text-align: center; font-size: 24px; outline: none; margin-bottom: 15px; font-family: 'Oswald', sans-serif; }
         .btn-login { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--oliva); color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; }
 
-        /* PAINEL */
         .app-container { width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
         .header { text-align: center; margin-bottom: 30px; }
         .header h1 { font-family: 'Oswald', sans-serif; color: var(--oliva); font-size: 32px; margin: 0; text-transform: uppercase; }
@@ -84,8 +82,7 @@
     async function carregarDados() {
         const container = document.getElementById('lista-master');
         const loader = document.getElementById('loading');
-        container.innerHTML = ""; 
-        loader.style.display = "block";
+        container.innerHTML = ""; loader.style.display = "block";
 
         try {
             const res = await fetch(SHEETDB_URL);
@@ -120,21 +117,15 @@
                 agendamentosPorData[data].sort((a, b) => a.HORA.localeCompare(b.HORA));
 
                 agendamentosPorData[data].forEach(item => {
-                    const primeiroNome = item.NOME.split(' ')[0];
+                    const nomeCliente = item.NOME.split(' ')[0];
                     
-                    // EXPERIÊNCIA CUSTOMIZADA - TEXTO DE ALTO IMPACTO
-                    const textoBase = 
-`Prezado *${primeiroNome}*, tudo bem? 🎩
-
-Sua sessão de cuidado e estilo está confirmada aqui no *Barber Cadu*. Reservamos o melhor horário para sua transformação:
-
-✨ *${item.SERVICO}*
-📅 *${item.DATA}* às *${item.HORA}*
-
-Estamos preparando tudo para te receber com exclusividade. Podemos confirmar sua chegada? 🤝`;
-
-                    const msg = encodeURIComponent(textoBase);
+                    // EXPERIÊNCIA TRANQUILA E DIRETA (EMOJIS CODIFICADOS PARA NÃO FALHAR)
+                    // %F0%9F%92%88 = Barber Pole | %E2%8F%B0 = Relógio | %E2%9C%85 = Check
+                    const saudacao = new Date().getHours() < 12 ? 'Fala' : 'Salve';
+                    const servicoURL = encodeURIComponent(item.SERVICO);
                     
+                    const msg = `${saudacao}%20${nomeCliente}%2C%20beleza%3F%20%0A%0AS passando%20pra%20confirmar%20seu%20hor%C3%A1rio%20aqui%20no%20*Barber%20Cadu*%3A%0A%0A%F0%9F%92%88%20*${servicoURL}*%0A%E2%8F%B0%20*${item.DATA}*%20%C3%A0s%20*${item.HORA}*%0A%0AConfirmado%3F%20Aguardamos%20voc%C3%AA%20na%20cadeira%21%20%E2%9C%85`;
+
                     const card = document.createElement('div');
                     card.className = 'card-cliente';
                     card.innerHTML = `
@@ -153,7 +144,7 @@ Estamos preparando tudo para te receber com exclusividade. Podemos confirmar sua
             });
         } catch (e) { 
             loader.style.display = "none";
-            container.innerHTML = "<p style='text-align:center;'>Erro ao carregar agenda.</p>";
+            container.innerHTML = "<p>Erro ao carregar agenda.</p>";
         }
     }
 
@@ -161,7 +152,7 @@ Estamos preparando tudo para te receber com exclusividade. Podemos confirmar sua
         const { isConfirmed } = await Swal.fire({
             title: 'Excluir?',
             text: `Remover ${nome} - ${hora}?`,
-            icon: 'warning', showCancelButton: true, confirmButtonColor: '#708238', cancelButtonColor: '#1a1a1a', confirmButtonText: 'Sim', background: '#0a0a0a', color: '#fff'
+            icon: 'warning', showCancelButton: true, confirmButtonColor: '#708238', background: '#0a0a0a', color: '#fff'
         });
         
         if (isConfirmed) {
@@ -174,7 +165,7 @@ Estamos preparando tudo para te receber com exclusividade. Podemos confirmar sua
                     carregarDados();
                 }
             } catch (e) { 
-                Swal.fire('Erro!', 'Não foi possível excluir.', 'error'); 
+                Swal.fire('Erro!', 'Falha ao excluir.', 'error'); 
             }
         }
     }
